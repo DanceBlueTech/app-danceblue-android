@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,11 +25,12 @@ import java.util.concurrent.TimeUnit;
 
 public class home extends Fragment {
     private SimpleDateFormat formatter; //declared as data members so inner classes can access
-    private Date countdownEnd;
+    private Date countdownEnd, countdownStart;
     private TextView countdownTitle, dayText, dayLabel, hourText, hourLabel, minText, minLabel,
         secText, secLabel;
+    private CountDownTimer timer;
+    private View fragmentView;
     //TODO dynamic background img will have to be declared up here too
-    private CountDownTimer timer; //declared here so both onViewCreated and onPause can access
 
     @Nullable
     @Override
@@ -40,6 +42,8 @@ public class home extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        fragmentView = view;
+
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
 
         //begin countdown timer code
@@ -53,93 +57,104 @@ public class home extends Fragment {
         secText = view.findViewById(R.id.secText);
         secLabel = view.findViewById(R.id.secLabel);
         formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        Date countdownStart = new Date();
+        countdownStart = new Date();
+
+        //add an anonymous listener implementation to the children of "countdown" node
         databaseRef.child("countdown").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Object tempDate = dataSnapshot.child("date").getValue();
-                Object tempImg = dataSnapshot.child("image").getValue();
-                Object tempTitle = dataSnapshot.child("title").getValue();
-                String dateStr = (tempDate != null) ? tempDate.toString(): "";
-                String imgStr = (tempImg != null) ? tempImg.toString() : "";
-                String titleStr = (tempTitle != null) ? tempTitle.toString() : "";
-                countdownTitle.setText(titleStr);
-                //TODO dynamically create the imageview behind the countdown from this snapshot,
-                //TODO overlaps with Kendall's thing; we'll talk
-                try {
-                    countdownEnd = formatter.parse(dateStr);
-                } catch (ParseException e) {
-                    countdownEnd = new Date();
-                    //TODO log this
-                }
+                makeCountdownTimer(dataSnapshot);
             }
+
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Object tempDate = dataSnapshot.child("date").getValue();
-                Object tempImg = dataSnapshot.child("image").getValue();
-                Object tempTitle = dataSnapshot.child("title").getValue();
-                String dateStr = (tempDate != null) ? tempDate.toString(): "";
-                String imgStr = (tempImg != null) ? tempImg.toString() : "";
-                String titleStr = (tempTitle != null) ? tempTitle.toString() : "";
-                countdownTitle.setText(titleStr);
-                //TODO dynamically create the imageview behind the countdown from this snapshot,
-                //TODO overlaps with Kendall's thing; we'll talk
-                try {
-                    countdownEnd = formatter.parse(dateStr);
-                } catch (ParseException e) {
-                    countdownEnd = new Date();
-                    //TODO log this
-                }
+                makeCountdownTimer(dataSnapshot);
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
+                //intentionally blank
             }
 
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
+                //intentionally blank
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+                //intentionally blank
+            }
 
+            //custom timer implementation
+            private void makeCountdownTimer(@NonNull DataSnapshot dataSnapshot) {
+                Object tempDate = dataSnapshot.child("date").getValue();
+                Object tempImg = dataSnapshot.child("image").getValue();
+                Object tempTitle = dataSnapshot.child("title").getValue();
+
+                String dateStr = (tempDate != null) ? tempDate.toString(): "";
+                Log.d("dbCheck", dateStr);
+                String imgStr = (tempImg != null) ? tempImg.toString() : "";
+                Log.d("dbCheck", imgStr);
+                String titleStr = (tempTitle != null) ? tempTitle.toString() : "No event found";
+                Log.d("dbCheck", titleStr);
+
+                countdownTitle.setText(titleStr);
+                //TODO dynamically create the imageview behind the countdown from this snapshot,
+                //TODO overlaps with Kendall's thing; we'll talk
+                try { //catch date string parsing errors
+                    countdownEnd = formatter.parse(dateStr);
+                } catch (ParseException e) { //print error to log
+                    countdownEnd = new Date();
+                    Log.e("onViewCreated", "countdownEnd date couldn't be parsed");
+                    Log.e("onViewCreated", e.getMessage());
+                }
+
+                long timeDiff = countdownEnd.getTime() - countdownStart.getTime();
+                Log.d("diffCheck", String.valueOf(timeDiff));
+
+                //start a timer length = milliseconds till next event, ticks every second,
+                //custom anonymous implementation
+                timer = new CountDownTimer(timeDiff, 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) { //runs every tick
+                        //TODO make this less ugly?
+                        int days = (int) TimeUnit.MILLISECONDS.toDays(millisUntilFinished);
+                        Log.d("daysCheck", String.valueOf(days));
+                        long hours = (int) TimeUnit.MILLISECONDS.toHours(millisUntilFinished -
+                                TimeUnit.DAYS.toMillis(days));
+                        Log.d("hoursCheck", String.valueOf(hours));
+                        long mins = (int) TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished -
+                                TimeUnit.DAYS.toMillis(days) - TimeUnit.HOURS.toMillis(hours));
+                        Log.d("minsCheck", String.valueOf(mins));
+                        long secs = (int) TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished -
+                                TimeUnit.DAYS.toMillis(days) - TimeUnit.HOURS.toMillis(hours) -
+                                TimeUnit.MINUTES.toMillis(mins));
+                        Log.d("secsCheck", String.valueOf(secs));
+                        dayText.setText(String.valueOf(days));
+                        dayLabel.setText((days == 1) ? "Day" : "Days");
+                        hourText.setText(String.valueOf(days));
+                        hourLabel.setText((hours == 1) ? "Hour" : "Hours");
+                        minText.setText(String.valueOf(days));
+                        minLabel.setText((mins == 1) ? "Minute" : "Minutes");
+                        secText.setText(String.valueOf(days));
+                        secLabel.setText((secs == 1) ? "Second" : "Seconds");
+                        fragmentView.invalidate();
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        this.start(); //timer always runs, with new info when Firebase updates
+                    }
+                }.start(); //start the timer once created
             }
         });
-        long timeDiff = countdownEnd.getTime() - countdownStart.getTime();
-        timer = new CountDownTimer(timeDiff, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                long days = TimeUnit.MILLISECONDS.toDays(millisUntilFinished);
-                long hours = TimeUnit.MILLISECONDS.toHours(millisUntilFinished) -
-                        TimeUnit.DAYS.toHours(days);
-                long mins = TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) -
-                        TimeUnit.HOURS.toMinutes(hours);
-                long secs = TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
-                        TimeUnit.MINUTES.toSeconds(mins);
-                dayText.setText(String.valueOf(days));
-                dayLabel.setText((days == 1) ? "Day" : "Days");
-                hourText.setText(String.valueOf(days));
-                hourLabel.setText((hours == 1) ? "Hour" : "Hours");
-                minText.setText(String.valueOf(days));
-                minLabel.setText((mins == 1) ? "Minute" : "Minutes");
-                secText.setText(String.valueOf(days));
-                secLabel.setText((secs == 1) ? "Second" : "Seconds");
-            }
-
-            @Override
-            public void onFinish() {
-                this.start(); //timer always runs, with new info when Firebase updates
-            }
-        };
-        timer.start();
     }
 
     @Override
     public void onPause() {
-        timer.cancel(); //to be super safe wrt memory leaks
+        if (timer != null) timer.cancel(); //to be super safe wrt memory leaks
         super.onPause();
     }
 }
