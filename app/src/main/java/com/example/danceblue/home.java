@@ -29,7 +29,6 @@ public class home extends Fragment {
     private TextView countdownTitle, dayText, dayLabel, hourText, hourLabel, minText, minLabel,
         secText, secLabel;
     private CountDownTimer timer;
-    private View fragmentView;
     //TODO dynamic background img will have to be declared up here too
 
     @Nullable
@@ -42,7 +41,6 @@ public class home extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        fragmentView = view;
 
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
 
@@ -63,13 +61,13 @@ public class home extends Fragment {
         databaseRef.child("countdown").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                makeCountdownTimer(dataSnapshot);
+                makeCountdownTimer(dataSnapshot); //whenever a new event is added in the database
             }
 
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                makeCountdownTimer(dataSnapshot);
+                makeCountdownTimer(dataSnapshot); //whenever an event is changed, reordered, etc.
             }
 
             @Override
@@ -87,19 +85,17 @@ public class home extends Fragment {
                 //intentionally blank
             }
 
-            //custom timer implementation
+            //gets database date/time for next event, cancels the last timer, makes a new one
             private void makeCountdownTimer(@NonNull DataSnapshot dataSnapshot) {
+                //get the db info, make sure it's not null
                 Object tempDate = dataSnapshot.child("date").getValue();
                 Object tempImg = dataSnapshot.child("image").getValue();
                 Object tempTitle = dataSnapshot.child("title").getValue();
-
                 String dateStr = (tempDate != null) ? tempDate.toString(): "";
-                Log.d("dbCheck", dateStr);
                 String imgStr = (tempImg != null) ? tempImg.toString() : "";
-                Log.d("dbCheck", imgStr);
                 String titleStr = (tempTitle != null) ? tempTitle.toString() : "No event found";
-                Log.d("dbCheck", titleStr);
 
+                //set the event title and image(NYI)
                 countdownTitle.setText(titleStr);
                 //TODO dynamically create the imageview behind the countdown from this snapshot,
                 //TODO overlaps with Kendall's thing; we'll talk
@@ -112,40 +108,39 @@ public class home extends Fragment {
                 }
 
                 long timeDiff = countdownEnd.getTime() - countdownStart.getTime();
-                Log.d("diffCheck", String.valueOf(timeDiff));
 
+                if (timer != null) timer.cancel(); //to be super safe wrt memory leaks
                 //start a timer length = milliseconds till next event, ticks every second,
                 //custom anonymous implementation
                 timer = new CountDownTimer(timeDiff, 1000) {
                     @Override
                     public void onTick(long millisUntilFinished) { //runs every tick
-                        //TODO make this less ugly?
+                        //convert and round directly from milliseconds
                         int days = (int) TimeUnit.MILLISECONDS.toDays(millisUntilFinished);
-                        Log.d("daysCheck", String.valueOf(days));
+                        //remaining milliseconds - days
                         long hours = (int) TimeUnit.MILLISECONDS.toHours(millisUntilFinished -
                                 TimeUnit.DAYS.toMillis(days));
-                        Log.d("hoursCheck", String.valueOf(hours));
+                        //remaining milliseconds - days - hours
                         long mins = (int) TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished -
                                 TimeUnit.DAYS.toMillis(days) - TimeUnit.HOURS.toMillis(hours));
-                        Log.d("minsCheck", String.valueOf(mins));
+                        //remaining milliseconds - days - hours - minutes
                         long secs = (int) TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished -
                                 TimeUnit.DAYS.toMillis(days) - TimeUnit.HOURS.toMillis(hours) -
                                 TimeUnit.MINUTES.toMillis(mins));
-                        Log.d("secsCheck", String.valueOf(secs));
+                        //set textViews with newest times, test for singular/plural label
                         dayText.setText(String.valueOf(days));
                         dayLabel.setText((days == 1) ? "Day" : "Days");
-                        hourText.setText(String.valueOf(days));
+                        hourText.setText(String.valueOf(hours));
                         hourLabel.setText((hours == 1) ? "Hour" : "Hours");
-                        minText.setText(String.valueOf(days));
+                        minText.setText(String.valueOf(mins));
                         minLabel.setText((mins == 1) ? "Minute" : "Minutes");
-                        secText.setText(String.valueOf(days));
+                        secText.setText(String.valueOf(secs));
                         secLabel.setText((secs == 1) ? "Second" : "Seconds");
-                        fragmentView.invalidate();
                     }
 
                     @Override
                     public void onFinish() {
-                        this.start(); //timer always runs, with new info when Firebase updates
+                        this.start(); //timer always runs
                     }
                 }.start(); //start the timer once created
             }
