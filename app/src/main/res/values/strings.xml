@@ -4,4 +4,12 @@
     <string name="home">Home</string>
     <string name="blog">Blog</string>
     <string name="more">More</string>
+    <string name="more_fragment">MORE FRAGMENT</string>
+    <string name="events_fragment">EVENTS FRAGMENT</string>
+    <string name="blog_fragment">BLOG FRAGMENT</string>
+    <string name="rave_nyi">Rave NYI</string>
+    <string name="days">Days</string>
+    <string name="hours">Hours</string>
+    <string name="minutes">Minutes</string>
+    <string name="seconds">Seconds</string>
 </resources>
