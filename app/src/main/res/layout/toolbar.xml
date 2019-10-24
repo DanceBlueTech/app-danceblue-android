@@ -5,12 +5,28 @@
     android:background="@color/colorPrimaryDark"
     android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
 
-    <TextView
-        android:layout_width="match_parent"
+    <ImageButton
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:text="@string/home"
+        android:src="@drawable/ic_qr_temp_24dp"
+        android:gravity="start"
+        android:id="@+id/qr_button"
+        android:contentDescription="@string/qr_button" />
+
+    <TextView
+        android:id="@+id/toolbar_title"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:gravity="center"
-        android:textSize="18sp"
-        android:id="@+id/toolbar_title"/>
+        android:text="@string/home"
+        android:textSize="18sp" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_rave_temp_24dp"
+        android:gravity="end"
+        android:id="@+id/rave_button"
+        android:contentDescription="@string/rave_button" />
 
 </androidx.appcompat.widget.Toolbar>

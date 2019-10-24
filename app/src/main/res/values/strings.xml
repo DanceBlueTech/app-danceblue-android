@@ -12,4 +12,7 @@
     <string name="hours">Hours</string>
     <string name="minutes">Minutes</string>
     <string name="seconds">Seconds</string>
+    <string name="home_fragment">HOME FRAGMENT</string>
+    <string name="rave_button">rave_button</string>
+    <string name="qr_button">QR Button</string>
 </resources>
