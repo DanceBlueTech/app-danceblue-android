@@ -7,15 +7,15 @@
     tools:context=".viewLayout">
 
     <ImageView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:scaleType="fitXY"
         android:id="@+id/DB_layout"
+        android:layout_width="409dp"
+        android:layout_height="383dp"
+        android:contentDescription="@string/db_layout"
+        android:scaleType="fitXY"
         android:src="@drawable/db_floormap"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:contentDescription="@string/db_layout" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

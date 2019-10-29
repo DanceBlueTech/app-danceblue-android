@@ -16,6 +16,7 @@
     <string name="rave_button">rave_button</string>
     <string name="qr_button">QR Button</string>
     <string name="db_layout">DB Layout</string>
-    <string name="sponsers">Sponsers</string>
-    <string name="layoutTitle">Layout</string>
+    <string name="sponsorTitle">SPONSORS</string>
+    <string name="layoutTitle">LAYOUT</string>
+    <string name="faqsTitle">FAQs</string>
 </resources>

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
 <androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/outer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -29,6 +30,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tempTitle"
+        android:layout_below="@+id/tempTitle"
         app:layout_constraintVertical_bias="0.100000024">
 
         <TableRow
@@ -115,29 +117,31 @@
         android:gravity="start"
         android:id="@+id/layout_title"
         android:text="@string/layoutTitle"
+        android:layout_below="@+id/timeTable"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/timeTable"
         app:layout_constraintBottom_toTopOf="@id/DB_layout" />
 
     <ImageButton
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:scaleType="fitXY"
         android:id="@+id/DB_layout"
+        android:layout_width="410dp"
+        android:layout_height="326dp"
+        android:contentDescription="@string/db_layout"
+        android:scaleType="fitXY"
         android:src="@drawable/db_floormap"
+        app:layout_constraintBottom_toTopOf="@id/sponsor_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_title"
-        app:layout_constraintBottom_toTopOf="@id/sponser_title"
-        android:contentDescription="@string/db_layout" />
+        app:layout_constraintTop_toBottomOf="@+id/layout_title" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="start"
-        android:id="@+id/sponser_title"
-        android:text="@string/sponsers"
+        android:id="@+id/sponsor_title"
+        android:text="@string/sponsorTitle"
+        android:layout_below="@+id/DB_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/DB_layout"
