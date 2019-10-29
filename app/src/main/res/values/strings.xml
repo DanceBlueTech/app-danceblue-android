@@ -15,4 +15,7 @@
     <string name="home_fragment">HOME FRAGMENT</string>
     <string name="rave_button">rave_button</string>
     <string name="qr_button">QR Button</string>
+    <string name="db_layout">DB Layout</string>
+    <string name="sponsers">Sponsers</string>
+    <string name="layoutTitle">Layout</string>
 </resources>

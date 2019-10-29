@@ -2,16 +2,9 @@
 <androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimaryDark"
     android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
-
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:src="@drawable/ic_qr_temp_24dp"
-        android:gravity="start"
-        android:id="@+id/qr_button"
-        android:contentDescription="@string/qr_button" />
 
     <TextView
         android:id="@+id/toolbar_title"
@@ -24,7 +17,7 @@
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:src="@drawable/ic_rave_temp_24dp"
+        android:src="@drawable/ic_rave_button"
         android:gravity="end"
         android:id="@+id/rave_button"
         android:contentDescription="@string/rave_button" />

@@ -11,7 +11,7 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tempTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="30sp"
@@ -23,11 +23,12 @@
     <TableLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/timeTable"
         android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/DB_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/tempTitle"
         app:layout_constraintVertical_bias="0.100000024">
 
         <TableRow
@@ -107,6 +108,40 @@
         </TableRow>
 
     </TableLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:id="@+id/layout_title"
+        android:text="@string/layoutTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timeTable"
+        app:layout_constraintBottom_toTopOf="@id/DB_layout" />
+
+    <ImageButton
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:id="@+id/DB_layout"
+        android:src="@drawable/db_floormap"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_title"
+        app:layout_constraintBottom_toTopOf="@id/sponser_title"
+        android:contentDescription="@string/db_layout" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:id="@+id/sponser_title"
+        android:text="@string/sponsers"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/DB_layout"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

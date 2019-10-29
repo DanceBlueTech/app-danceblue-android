@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new home()).commit();
 
-        final ImageButton raveButton = findViewById(R.id.rave_button);
+        ImageButton raveButton = findViewById(R.id.rave_button);
         raveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

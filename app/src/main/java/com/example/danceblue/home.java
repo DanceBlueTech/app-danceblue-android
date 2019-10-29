@@ -1,5 +1,6 @@
 package com.example.danceblue;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.firebase.database.ChildEventListener;
@@ -42,6 +44,16 @@ public class home extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        //If image is clicked on, load activity to view image in fullscreen
+        ImageButton layoutButton = getView().findViewById(R.id.DB_layout);
+        layoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), viewLayout.class);
+                startActivity(intent);
+            }
+        });
 
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
 
