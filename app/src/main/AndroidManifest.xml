@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/db_logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".raveHour"></activity>
+        <activity android:name=".raveHour"/>
         <activity
             android:name=".splash"
             android:label="@string/app_name">

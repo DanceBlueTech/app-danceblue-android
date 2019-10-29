@@ -21,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class home extends Fragment {
@@ -54,7 +55,7 @@ public class home extends Fragment {
         minLabel = view.findViewById(R.id.minLabel);
         secText = view.findViewById(R.id.secText);
         secLabel = view.findViewById(R.id.secLabel);
-        formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
         countdownStart = new Date();
 
         //add an anonymous listener implementation to the children of "countdown" node
