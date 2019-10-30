@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.firebase.database.ChildEventListener;
@@ -19,6 +20,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,6 +35,7 @@ public class home extends Fragment {
         secText, secLabel;
     private CountDownTimer timer;
     //TODO dynamic background img will have to be declared up here too
+    private LinearLayout announcementsLL;
 
     @Nullable
     @Override
@@ -42,7 +45,7 @@ public class home extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         //If image is clicked on, load activity to view image in fullscreen
@@ -55,7 +58,7 @@ public class home extends Fragment {
             }
         });
 
-        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
+        final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
 
         //begin countdown timer code
         countdownTitle = view.findViewById(R.id.countdownTitle);
@@ -100,11 +103,11 @@ public class home extends Fragment {
 
             //gets database date/time for next event, cancels the last timer, makes a new one
             private void makeCountdownTimer(@NonNull DataSnapshot dataSnapshot) {
-                //get the db info, make sure it's not null
+                //get the db info, make sure it's not null before string conversion
                 Object tempDate = dataSnapshot.child("date").getValue();
                 Object tempImg = dataSnapshot.child("image").getValue();
                 Object tempTitle = dataSnapshot.child("title").getValue();
-                String dateStr = (tempDate != null) ? tempDate.toString(): "";
+                String dateStr = (tempDate != null) ? tempDate.toString() : "";
                 String imgStr = (tempImg != null) ? tempImg.toString() : "";
                 String titleStr = (tempTitle != null) ? tempTitle.toString() : "No event found";
 
@@ -156,6 +159,62 @@ public class home extends Fragment {
                         this.start(); //timer always runs
                     }
                 }.start(); //start the timer once created
+            }
+        });
+        //end countdown timer code
+
+        //begin announcements code
+        //listens for any changes within announcements node
+        databaseRef.child("announcements").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                makeAnnouncements(dataSnapshot);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                makeAnnouncements(dataSnapshot);
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                makeAnnouncements(dataSnapshot);
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                //intentionally left blank
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                //intentionally left blank
+            }
+
+            //gets data from firebase and attempts to make announcements from it
+            private void makeAnnouncements(@NonNull DataSnapshot dataSnapshot) {
+                //get a one time snapshot of the whole announcements node
+                databaseRef.child("announcements").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        //TODO remove all children of announceLL, iterate each child of announcements,
+                        //TODO make an announcement for each, add to announceLL in order of timestamp
+                        /*Object tempID = dataSnapshot.child("id").getValue();
+                        Object tempImg = dataSnapshot.child("image").getValue();
+                        Object tempTxt = dataSnapshot.child("text").getValue();
+                        Object tempTimestamp = dataSnapshot.child("timestamp").getValue();
+                        //make sure the data isn't null before string conversion
+                        String idStr = tempID.toString();
+                        String imgStr = tempImg.toString();
+                        String txtStr = tempTxt.toString();
+                        String timestampStr = (tempTimestamp != null) ? tempTimestamp.toString() : "";*/
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        //intentionally left blank
+                    }
+                });
             }
         });
     }

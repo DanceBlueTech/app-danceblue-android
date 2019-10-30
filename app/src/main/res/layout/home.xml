@@ -6,146 +6,171 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/outer"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <TextView
-        android:id="@+id/tempTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text = "@string/home_fragment"/>
-
-    <TableLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/timeTable"
-        android:gravity="center"
-        app:layout_constraintBottom_toTopOf="@id/DB_layout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tempTitle"
-        android:layout_below="@+id/tempTitle"
-        app:layout_constraintVertical_bias="0.100000024">
-
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center">
-
-            <TextView
-                android:id="@+id/countdownTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center">
-
-            <TextView
-                android:id="@+id/dayText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center" />
-
-            <TextView
-                android:id="@+id/hourText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center" />
-
-            <TextView
-                android:id="@+id/minText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center" />
-
-            <TextView
-                android:id="@+id/secText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center">
-
-            <TextView
-                android:id="@+id/dayLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/days" />
-
-            <TextView
-                android:id="@+id/hourLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/hours" />
-
-            <TextView
-                android:id="@+id/minLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/minutes" />
-
-            <TextView
-                android:id="@+id/secLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/seconds" />
-        </TableRow>
-
-    </TableLayout>
-
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/outer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="start"
-        android:id="@+id/layout_title"
-        android:text="@string/layoutTitle"
-        android:layout_below="@+id/timeTable"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/timeTable"
-        app:layout_constraintBottom_toTopOf="@id/DB_layout" />
+        android:layout_height="wrap_content">
 
-    <ImageButton
-        android:id="@+id/DB_layout"
-        android:layout_width="410dp"
-        android:layout_height="326dp"
-        android:contentDescription="@string/db_layout"
-        android:scaleType="fitXY"
-        android:src="@drawable/db_floormap"
-        app:layout_constraintBottom_toTopOf="@id/sponsor_title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_title" />
+        <TextView
+            android:id="@+id/tempTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/home_fragment"
+            android:textSize="30sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/timeTable"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="start"
-        android:id="@+id/sponsor_title"
-        android:text="@string/sponsorTitle"
-        android:layout_below="@+id/DB_layout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/DB_layout"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        <TableLayout
+            android:id="@+id/timeTable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tempTitle"
+            android:gravity="center"
+            app:layout_constraintBottom_toTopOf="@id/announce_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tempTitle"
+            app:layout_constraintVertical_bias="0.100000024">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/countdownTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/dayText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center" />
+
+                <TextView
+                    android:id="@+id/hourText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center" />
+
+                <TextView
+                    android:id="@+id/minText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center" />
+
+                <TextView
+                    android:id="@+id/secText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/dayLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/days" />
+
+                <TextView
+                    android:id="@+id/hourLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/hours" />
+
+                <TextView
+                    android:id="@+id/minLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/minutes" />
+
+                <TextView
+                    android:id="@+id/secLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/seconds" />
+            </TableRow>
+
+        </TableLayout>
+
+        <TextView
+            android:id="@+id/announce_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/announceTitle"
+            app:layout_constraintBottom_toTopOf="@id/announceLL"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/timeTable" />
+
+        <LinearLayout
+            android:id="@+id/announceLL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/layout_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/announce_title">
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/layout_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/timeTable"
+            android:gravity="start"
+            android:text="@string/layoutTitle"
+            app:layout_constraintBottom_toTopOf="@id/DB_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/announceLL" />
+
+        <ImageButton
+            android:id="@+id/DB_layout"
+            android:layout_width="410dp"
+            android:layout_height="326dp"
+            android:contentDescription="@string/db_layout"
+            android:scaleType="fitXY"
+            android:src="@drawable/db_floormap"
+            app:layout_constraintBottom_toTopOf="@id/sponsor_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_title" />
+
+        <TextView
+            android:id="@+id/sponsor_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/DB_layout"
+            android:gravity="start"
+            android:text="@string/sponsorTitle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/DB_layout" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
