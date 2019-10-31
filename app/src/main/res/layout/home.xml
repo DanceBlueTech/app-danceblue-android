@@ -125,7 +125,7 @@
 
         <LinearLayout
             android:id="@+id/announceLL"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintBottom_toTopOf="@+id/layout_title"
