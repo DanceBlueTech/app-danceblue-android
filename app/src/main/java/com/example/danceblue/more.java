@@ -29,5 +29,14 @@ public class more extends Fragment {
                 startActivity(intent);
             }
         });
+
+        ImageButton contactButton = getView().findViewById(R.id.Contact);
+        contactButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), viewContact.class);
+                startActivity(intent);
+            }
+        });
     }
 }

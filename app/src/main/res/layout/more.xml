@@ -9,24 +9,64 @@
 
     <TextView
         style="@style/TitleFont"
-        android:id="@+id/faqTitle"
+        android:id="@+id/donateTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="start"
-        android:text="@string/faqsTitle"
-        app:layout_constraintBottom_toTopOf="@id/FAQs"
+        android:text="@string/donate"
+        app:layout_constraintBottom_toTopOf="@id/faqTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        style="@style/TitleFont"
+        android:id="@+id/faqTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:layout_below="@+id/donateTitle"
+        android:text="@string/faqsTitle"
+        app:layout_constraintBottom_toTopOf="@id/FAQs"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/donateTitle" />
+
     <ImageButton
         android:id="@+id/FAQs"
         android:layout_width="match_parent"
-        android:layout_height="125dp"
+        android:layout_height="150dp"
         android:layout_below="@+id/faqTitle"
         android:contentDescription="@string/faqsTitle"
         android:scaleType="fitXY"
         android:src="@drawable/faq"
+        app:layout_constraintTop_toBottomOf="@id/faqTitle"
+        app:layout_constraintBottom_toTopOf="@id/contactTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        style="@style/TitleFont"
+        android:id="@+id/contactTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/FAQs"
+        android:gravity="start"
+        android:text="@string/contact"
+        app:layout_constraintTop_toBottomOf="@id/FAQs"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/Contact" />
+
+    <ImageButton
+        android:id="@+id/Contact"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_below="@+id/contactTitle"
+        android:contentDescription="@string/contact"
+        android:scaleType="fitXY"
+        android:src="@drawable/contact"
+        app:layout_constraintTop_toBottomOf="@id/FAQs"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

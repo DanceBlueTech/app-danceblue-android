@@ -20,4 +20,6 @@
     <string name="layoutTitle">LAYOUT</string>
     <string name="faqsTitle">FAQs</string>
     <string name="announceTitle">ANNOUNCEMENTS</string>
+    <string name="donate">DONATE</string>
+    <string name="contact">CONTACT</string>
 </resources>
