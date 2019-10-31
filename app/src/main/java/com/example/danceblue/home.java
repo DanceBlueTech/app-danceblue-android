@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -35,7 +36,8 @@ public class home extends Fragment {
         secText, secLabel;
     private CountDownTimer timer;
     //TODO dynamic background img will have to be declared up here too
-    private LinearLayout announcementsLL;
+
+
 
     @Nullable
     @Override
@@ -72,6 +74,7 @@ public class home extends Fragment {
         secLabel = view.findViewById(R.id.secLabel);
         formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
         countdownStart = new Date();
+
 
         //add an anonymous listener implementation to the children of "countdown" node
         databaseRef.child("countdown").addChildEventListener(new ChildEventListener() {
@@ -217,6 +220,9 @@ public class home extends Fragment {
                 });
             }
         });
+
+        //the following code instantiates the sponsor images and their urls
+
     }
 
     @Override

@@ -2,7 +2,6 @@
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
@@ -171,6 +170,39 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/DB_layout" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_below="@+id/sponsor_title"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sponsor_title"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/sponsor_title"
+                    android:src="@drawable/ic_launcher_background"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:text="Sponsor Name"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:textColor="#000"
+                    android:autoSizeTextType="uniform"
+                    android:autoSizeMinTextSize="8sp"
+                    android:autoSizeMaxTextSize="15sp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
