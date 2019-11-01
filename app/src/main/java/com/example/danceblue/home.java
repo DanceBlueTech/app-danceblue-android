@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -21,7 +20,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -41,6 +39,8 @@ public class home extends Fragment {
     private LinearLayout announcementsLL;
     private ArrayList<Announcement> announcementsAL;
     private static final String TAG = "home.java";
+    private View view;
+    private DatabaseReference databaseRef;
 
     @Nullable
     @Override
@@ -52,6 +52,7 @@ public class home extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        this.view = view;
 
         //If image is clicked on, load activity to view image in fullscreen
         ImageButton layoutButton = getView().findViewById(R.id.DB_layout);
@@ -63,8 +64,105 @@ public class home extends Fragment {
             }
         });
 
-        final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
+        databaseRef = FirebaseDatabase.getInstance().getReference();
 
+        //begin announcements code
+        //layout to hold variable amount of announcements
+        announcementsLL = view.findViewById(R.id.announceLL);
+        //arraylist to hold announcement objects that are in the layout above.
+        //allows the announcements to be easily sorted and added/re/moved
+        announcementsAL = new ArrayList<>();
+        //listens for any changes within announcements node
+        databaseRef.child("announcements").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Log.d(TAG, "onChildAdded() called with: dataSnapshot = [" + dataSnapshot + "], s = [" + s + "]");
+                //make a representative announcement object from the DB info
+                Announcement announcement = new Announcement(dataSnapshot);
+                if (announcement.isValid()) { //if the new child had no null fields
+                    announcementsAL.add(announcement); //add to data to be drawn
+                    Collections.sort(announcementsAL); //sort the data for the layout by timestamp
+                    announcementsLL.removeAllViews(); //clear the layout
+                    for (Announcement announcement1 : announcementsAL) { //redraw layout w/ new order
+                        //todo make imageView from announcement1.getImageURL(), add to horizontal sub layout
+                        TextView textView = new TextView(getActivity());
+                        textView.setText(announcement1.getText());
+                        LinearLayout horizontalLL = new LinearLayout(getActivity()); //horizontal by default
+                        horizontalLL.addView(textView);
+                        announcementsLL.addView(horizontalLL);//add the new img/text to announcements view
+                        view.invalidate(); //schedule a redraw
+                    }
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Log.d(TAG, "onChildChanged() called with: dataSnapshot = [" + dataSnapshot + "], s = [" + s + "]");
+                //make a representative announcement object from the DB info
+                Announcement announcement = new Announcement(dataSnapshot);
+                if (announcement.isValid()) { //if the new child had no null fields
+                    //find the old announcement(s) with the same ID as the new announcement
+                    for (Announcement announcement1 : announcementsAL) {
+                        if (announcement.getId().equals(announcement1.getId())) {
+                            announcementsAL.remove(announcement1);
+                        }
+                    }
+                    announcementsAL.add(announcement); //add to data to be drawn
+                    Collections.sort(announcementsAL); //sort the data for the layout by timestamp
+                    announcementsLL.removeAllViews(); //clear the layout
+                    for (Announcement announcement1 : announcementsAL) { //redraw layout w/ new order
+                        //todo make imageView from announcement1.getImageURL(), add to horizontal sub layout
+                        TextView textView = new TextView(getActivity());
+                        textView.setText(announcement1.getText());
+                        LinearLayout horizontalLL = new LinearLayout(getActivity()); //horizontal by default
+                        horizontalLL.addView(textView);
+                        announcementsLL.addView(horizontalLL);//add the new img/text to announcements view
+                        view.invalidate(); //schedule a redraw
+                    }
+                }
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                Log.d(TAG, "onChildRemoved() called with: dataSnapshot = [" + dataSnapshot + "]");
+                //make a representative announcement object from the DB info
+                Announcement announcement = new Announcement(dataSnapshot);
+                if (announcement.isValid()) { //if the new child had no null fields
+                    //find the old announcement(s) with the same ID as the new announcement
+                    for (Announcement announcement1 : announcementsAL) {
+                        if (announcement.getId().equals(announcement1.getId())) {
+                            announcementsAL.remove(announcement1);
+                        }
+                    }
+                    Collections.sort(announcementsAL); //sort the data for the layout by timestamp
+                    announcementsLL.removeAllViews(); //clear the layout
+                    for (Announcement announcement1 : announcementsAL) { //redraw layout w/ new order
+                        //todo make imageView from announcement1.getImageURL(), add to horizontal sub layout
+                        TextView textView = new TextView(getActivity());
+                        textView.setText(announcement1.getText());
+                        LinearLayout horizontalLL = new LinearLayout(getActivity()); //horizontal by default
+                        horizontalLL.addView(textView);
+                        announcementsLL.addView(horizontalLL);//add the new img/text to announcements view
+                        view.invalidate(); //schedule a redraw
+                    }
+                }
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                //intentionally left blank
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                //intentionally left blank
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         //begin countdown timer code
         countdownTitle = view.findViewById(R.id.countdownTitle);
         dayText = view.findViewById(R.id.dayText);
@@ -164,101 +262,6 @@ public class home extends Fragment {
                     }
                 }.start(); //start the timer once created
                 view.invalidate(); //schedule a redraw
-            }
-        });
-        //end countdown timer code
-
-
-        //begin announcements code
-        //layout to hold variable amount of announcements
-        announcementsLL = view.findViewById(R.id.announceLL);
-        //arraylist to hold announcement objects that are in the layout above.
-        //allows the announcements to be easily sorted and added/re/moved
-        announcementsAL = new ArrayList<>();
-        //listens for any changes within announcements node
-        databaseRef.child("announcements").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Log.d(TAG, "onChildAdded() called with: dataSnapshot = [" + dataSnapshot + "], s = [" + s + "]");
-                //make a representative announcement object from the DB info
-                Announcement announcement = new Announcement(dataSnapshot);
-                if (announcement.isValid()) { //if the new child had no null fields
-                    announcementsAL.add(announcement); //add to data to be drawn
-                    Collections.sort(announcementsAL); //sort the data for the layout by timestamp
-                    announcementsLL.removeAllViews(); //clear the layout
-                    for (Announcement announcement1 : announcementsAL) { //redraw layout w/ new order
-                        //todo make imageView from announcement1.getImageURL(), add to horizontal sub layout
-                        TextView textView = new TextView(getActivity());
-                        textView.setText(announcement1.getText());
-                        LinearLayout horizontalLL = new LinearLayout(getActivity()); //horizontal by default
-                        horizontalLL.addView(textView);
-                        announcementsLL.addView(horizontalLL);//add the new img/text to announcements view
-                        view.invalidate(); //schedule a redraw
-                    }
-                }
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Log.d(TAG, "onChildChanged() called with: dataSnapshot = [" + dataSnapshot + "], s = [" + s + "]");
-                //make a representative announcement object from the DB info
-                Announcement announcement = new Announcement(dataSnapshot);
-                if (announcement.isValid()) { //if the new child had no null fields
-                    //find the old announcement(s) with the same ID as the new announcement
-                    for (Announcement announcement1 : announcementsAL) {
-                        if (announcement.getId().equals(announcement1.getId())) {
-                            announcementsAL.remove(announcement1);
-                        }
-                    }
-                    announcementsAL.add(announcement); //add to data to be drawn
-                    Collections.sort(announcementsAL); //sort the data for the layout by timestamp
-                    announcementsLL.removeAllViews(); //clear the layout
-                    for (Announcement announcement1 : announcementsAL) { //redraw layout w/ new order
-                        //todo make imageView from announcement1.getImageURL(), add to horizontal sub layout
-                        TextView textView = new TextView(getActivity());
-                        textView.setText(announcement1.getText());
-                        LinearLayout horizontalLL = new LinearLayout(getActivity()); //horizontal by default
-                        horizontalLL.addView(textView);
-                        announcementsLL.addView(horizontalLL);//add the new img/text to announcements view
-                        view.invalidate(); //schedule a redraw
-                    }
-                }
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                Log.d(TAG, "onChildRemoved() called with: dataSnapshot = [" + dataSnapshot + "]");
-                //make a representative announcement object from the DB info
-                Announcement announcement = new Announcement(dataSnapshot);
-                if (announcement.isValid()) { //if the new child had no null fields
-                    //find the old announcement(s) with the same ID as the new announcement
-                    for (Announcement announcement1 : announcementsAL) {
-                        if (announcement.getId().equals(announcement1.getId())) {
-                            announcementsAL.remove(announcement1);
-                        }
-                    }
-                    Collections.sort(announcementsAL); //sort the data for the layout by timestamp
-                    announcementsLL.removeAllViews(); //clear the layout
-                    for (Announcement announcement1 : announcementsAL) { //redraw layout w/ new order
-                        //todo make imageView from announcement1.getImageURL(), add to horizontal sub layout
-                        TextView textView = new TextView(getActivity());
-                        textView.setText(announcement1.getText());
-                        LinearLayout horizontalLL = new LinearLayout(getActivity()); //horizontal by default
-                        horizontalLL.addView(textView);
-                        announcementsLL.addView(horizontalLL);//add the new img/text to announcements view
-                        view.invalidate(); //schedule a redraw
-                    }
-                }
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                //intentionally left blank
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                //intentionally left blank
             }
         });
     }
