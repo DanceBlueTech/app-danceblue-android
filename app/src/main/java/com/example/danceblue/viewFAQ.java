@@ -55,11 +55,13 @@ public class viewFAQ extends AppCompatActivity {
                         TextView Q = new TextView(viewFAQ.this);
                         Q.setText(faq1.getQuestion()); //set a textview to Question
                         TextView A = new TextView(viewFAQ.this);
+                        Q.setTextAppearance(viewFAQ.this, R.style.TitleFont);
                         A.setText(faq1.getAnswer()); //set a textview to Answer
-                        LinearLayout horizontalLL = new LinearLayout(viewFAQ.this); //horizontal by default
-                        horizontalLL.addView(Q);
-                        horizontalLL.addView(A);
-                        faqLL.addView(horizontalLL);//add the new Q/A to announcements view
+                        LinearLayout verticalLL = new LinearLayout(viewFAQ.this);//horizontal by default
+                        verticalLL.addView(Q);
+                        verticalLL.addView(A);
+                        verticalLL.setOrientation(LinearLayout.VERTICAL);
+                        faqLL.addView(verticalLL);//add the new Q/A to announcements view
                     }
                 }
             }
@@ -76,11 +78,13 @@ public class viewFAQ extends AppCompatActivity {
                         TextView Q = new TextView(viewFAQ.this);
                         Q.setText(faq1.getQuestion()); //set a textview to Question
                         TextView A = new TextView(viewFAQ.this);
+                        Q.setTextAppearance(viewFAQ.this, R.style.TitleFont);
                         A.setText(faq1.getAnswer()); //set a textview to Answer
-                        LinearLayout horizontalLL = new LinearLayout(viewFAQ.this); //horizontal by default
-                        horizontalLL.addView(Q);
-                        horizontalLL.addView(A);
-                        faqLL.addView(horizontalLL);//add the new Q/A to announcements view
+                        LinearLayout verticalLL = new LinearLayout(viewFAQ.this); //horizontal by default
+                        verticalLL.addView(Q);
+                        verticalLL.addView(A);
+                        verticalLL.setOrientation(LinearLayout.VERTICAL);
+                        faqLL.addView(verticalLL);//add the new Q/A to announcements view
                     }
                 }
             }
