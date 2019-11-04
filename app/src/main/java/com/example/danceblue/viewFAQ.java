@@ -4,11 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.util.Log;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -40,7 +37,7 @@ public class viewFAQ extends AppCompatActivity {
         faqLL = findViewById(R.id.faqLL);
         //arraylist to hold faq objects that are in the layout above.
         //allows the faqs to be easily sorted and added/re/moved
-        faqAL = new ArrayList<FAQ>();
+        faqAL = new ArrayList<>();
 
         databaseRef.child("FAQs").addChildEventListener(new ChildEventListener() {
             @Override

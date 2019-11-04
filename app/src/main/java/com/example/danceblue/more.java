@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import java.util.Objects;
+
 public class more extends Fragment {
     @Nullable
     @Override
@@ -21,7 +23,7 @@ public class more extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ImageButton layoutButton = getView().findViewById(R.id.FAQs);
+        ImageButton layoutButton = Objects.requireNonNull(getView()).findViewById(R.id.FAQs);
         layoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -30,7 +32,7 @@ public class more extends Fragment {
             }
         });
 
-        ImageButton contactButton = getView().findViewById(R.id.Contact);
+        ImageButton contactButton = Objects.requireNonNull(getView()).findViewById(R.id.Contact);
         contactButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

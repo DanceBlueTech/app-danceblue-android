@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class home extends Fragment {
@@ -55,7 +56,7 @@ public class home extends Fragment {
         this.view = view;
 
         //If image is clicked on, load activity to view image in fullscreen
-        ImageButton layoutButton = getView().findViewById(R.id.DB_layout);
+        ImageButton layoutButton = Objects.requireNonNull(getView()).findViewById(R.id.DB_layout);
         layoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

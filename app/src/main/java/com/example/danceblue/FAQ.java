@@ -21,7 +21,7 @@ public class FAQ {
         Answer = (tempA != null) ? tempA.toString() : "";
 
         //check validity of each string created above before moving on
-        if (tempQ.equals("") || tempA.equals("")) {
+        if (tempA != null && tempQ != null && (tempQ.equals("") || tempA.equals(""))) {
             isValid = false;
             return;
         }
