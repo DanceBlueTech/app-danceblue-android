@@ -11,27 +11,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/tempTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/home_fragment"
-            android:textSize="30sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/timeTable"/>
-
         <TableLayout
             android:id="@+id/timeTable"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tempTitle"
             android:gravity="center"
             app:layout_constraintBottom_toTopOf="@id/announce_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tempTitle"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.100000024">
 
             <TableRow
