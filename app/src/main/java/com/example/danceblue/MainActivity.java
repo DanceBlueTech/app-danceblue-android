@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void changeToolbarText (String Title){
+    public void changeToolbarText (String Title){
         Toolbar toolbar = findViewById(R.id.toolbar);
         TextView toolbarTitle = findViewById(R.id.toolbar_title);
         setSupportActionBar(toolbar);
