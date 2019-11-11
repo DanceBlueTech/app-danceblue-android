@@ -23,8 +23,17 @@ public class more extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ImageButton layoutButton = Objects.requireNonNull(getView()).findViewById(R.id.FAQs);
-        layoutButton.setOnClickListener(new View.OnClickListener() {
+        ImageButton donateButton = Objects.requireNonNull(getView()).findViewById(R.id.Donate);
+        donateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), viewDonate.class);
+                startActivity(intent);
+            }
+        });
+
+        ImageButton faqButton = Objects.requireNonNull(getView()).findViewById(R.id.FAQs);
+        faqButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), viewFAQ.class);

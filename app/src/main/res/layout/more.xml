@@ -14,10 +14,23 @@
         android:layout_height="wrap_content"
         android:gravity="start"
         android:text="@string/donate"
-        app:layout_constraintBottom_toTopOf="@id/faqTitle"
+        app:layout_constraintBottom_toTopOf="@id/Donate"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/Donate"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_below="@+id/donateTitle"
+        android:contentDescription="@string/donate"
+        android:scaleType="fitXY"
+        android:src="@drawable/donate"
+        app:layout_constraintTop_toBottomOf="@id/donateTitle"
+        app:layout_constraintBottom_toTopOf="@id/faqTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         style="@style/TitleFont"
@@ -25,19 +38,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="start"
-        android:layout_below="@+id/donateTitle"
-        android:text="@string/faqsTitle"
+        android:layout_below="@+id/Donate"
+        android:text="@string/faq"
         app:layout_constraintBottom_toTopOf="@id/FAQs"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/donateTitle" />
+        app:layout_constraintTop_toBottomOf="@id/Donate" />
 
     <ImageButton
         android:id="@+id/FAQs"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_below="@+id/faqTitle"
-        android:contentDescription="@string/faqsTitle"
+        android:contentDescription="@string/faq"
         android:scaleType="fitXY"
         android:src="@drawable/faq"
         app:layout_constraintTop_toBottomOf="@id/faqTitle"

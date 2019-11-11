@@ -10,7 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".viewContact"></activity>
+        <activity android:name=".viewDonate"></activity>
+        <activity android:name=".viewContact" />
         <activity android:name=".viewFAQ" />
         <activity android:name=".viewLayout" />
         <activity android:name=".raveHour" />
