@@ -35,7 +35,7 @@ public class raveHour extends AppCompatActivity {
             background.setBackgroundColor(colors.get(count));
             count++;
             if (count == 3) {count = 0;}
-            handler.postDelayed(runnable, 100);
+            handler.postDelayed(runnable, 200);
         }
     };
 }

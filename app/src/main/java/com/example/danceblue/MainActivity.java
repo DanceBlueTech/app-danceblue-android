@@ -46,13 +46,9 @@ public class MainActivity extends AppCompatActivity {
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                    Fragment selectedFragment = null;
+                    Fragment selectedFragment;
 
                     switch(menuItem.getItemId()){
-                        case R.id.action_home:
-                            selectedFragment = new home();
-                            changeToolbarText("Home");
-                            break;
                         case R.id.action_events:
                             selectedFragment = new events();
                             changeToolbarText("Events");
@@ -64,6 +60,10 @@ public class MainActivity extends AppCompatActivity {
                         case R.id.action_more:
                             selectedFragment = new more();
                             changeToolbarText("More");
+                            break;
+                        default:
+                            selectedFragment = new home();
+                            changeToolbarText("Home");
                             break;
                     }
 

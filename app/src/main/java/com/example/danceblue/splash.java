@@ -8,7 +8,6 @@ import android.os.Bundle;
 public class splash extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub super.onCreate(savedInstanceState);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
         Thread timerThread = new Thread() {
@@ -27,7 +26,7 @@ public class splash extends Activity {
     }
 
     @Override
-    protected void onPause() { // TODO Auto-generated method stub
+    protected void onPause() {
         super.onPause();
         finish();
     }
