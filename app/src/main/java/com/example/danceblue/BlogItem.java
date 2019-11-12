@@ -1,7 +1,7 @@
 package com.example.danceblue;
 
+import android.provider.ContactsContract;
 import android.util.Log;
-
 import com.google.firebase.database.DataSnapshot;
 
 import java.text.ParseException;
@@ -9,35 +9,40 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class Announcement implements Comparable<Announcement> {
-    //data members
+public class BlogItem implements Comparable<BlogItem>{
     private boolean isValid;
-    private String id, imageURL, text;
+    private String id, imageURL, author, title;
     private Date date;
-    private static final String TAG = "Announcement.java";
+    private static final String TAG = "BlogItem.java";
 
-    //constructor
-    public Announcement(DataSnapshot dataSnapshot) {
+    public BlogItem (DataSnapshot dataSnapshot){
         isValid = true; //assume valid info passed until proved otherwise
-        //read DB data, convert to strings after checking for nulls
+        //read id
         Object tempId = dataSnapshot.child("id").getValue();
-        Object tempImage = dataSnapshot.child("image").getValue();
-        Object tempText = dataSnapshot.child("text").getValue();
-        Object tempTimestamp = dataSnapshot.child("timestamp").getValue();
+
+        //read details info
+        DataSnapshot detailsSnapshot = dataSnapshot.child("details");
+        Object tempAuthor = detailsSnapshot.child("author").getValue();
+        Object tempTitle = detailsSnapshot.child("title").getValue();
+        Object tempTimeStamp = detailsSnapshot.child("timestamp").getValue();
+        Object tempImage = detailsSnapshot.child("image").getValue();
+
+        //TODO finish this section. Add conversions to strings and validity checks after finishing.
+        //read article info
+        DataSnapshot chunksSnapshot = dataSnapshot.child("chunks");
 
         //convert to strings, checking for null DB children
         id = (tempId != null) ? tempId.toString() : "";
-        imageURL = (tempImage != null) ? tempImage.toString() : "";
-        text = (tempText != null) ? tempText.toString() : "";
-        String timestamp = (tempTimestamp != null) ? tempTimestamp.toString() : "";
+        author = (tempAuthor != null) ? tempAuthor.toString() : "";
+        title = (tempTitle != null) ? tempTitle.toString() : "";
+        String timestamp = (tempTimeStamp != null) ? tempTimeStamp.toString() : "";
 
         //check validity of each string created above before moving on
-        if (id.equals("") || imageURL.equals("") || text.equals("") || timestamp.equals("")) {
+        if (id.equals("") || author.equals("") || title.equals("") || timestamp.equals("")) {
             isValid = false;
             return;
         }
 
-        //convert timestamp to a date so they can be sorted
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
         try { //catch date string parsing errors
             date = formatter.parse(timestamp);
@@ -47,7 +52,7 @@ public class Announcement implements Comparable<Announcement> {
             isValid = false;
         }
 
-        Log.d(TAG, "Announcement made with: "+isValid()+" "+getId()+" "+getText());
+        Log.d(TAG, "Announcement made with: "+isValid()+" "+getId()+" "+getAuthor()+" "+getTitle());
     }
 
     //methods
@@ -57,15 +62,18 @@ public class Announcement implements Comparable<Announcement> {
     public String getId() {
         return id;
     }
+    public String getAuthor() {
+        return author;
+    }
+    public String getTitle() {
+        return title;
+    }
     public String getImageURL() {
         return imageURL;
     }
-    public String getText() {
-        return text;
-    }
 
     @Override //allows Collections.sort() to sort these objects in descending order by timestamp
-    public int compareTo(Announcement o) {
+    public int compareTo(BlogItem o) {
         return this.date.compareTo(o.date);
     }
 }
