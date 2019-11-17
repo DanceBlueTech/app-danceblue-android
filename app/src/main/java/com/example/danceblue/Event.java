@@ -12,7 +12,7 @@ import java.util.Locale;
 public class Event implements Comparable<Event> {
     //data members
     private boolean isValid;
-    private String address, description, id, imageURL, mapURL, time, title;
+    private String address, description, id, imageURL, mapURL, time, title, formattedDate;
     private Date startDate, endDate;
     private static final String TAG = "Event.java";
 
@@ -64,6 +64,9 @@ public class Event implements Comparable<Event> {
             Log.e(TAG, e.getMessage());
             isValid = false;
         }
+
+        SimpleDateFormat displayFormatter = new SimpleDateFormat("EEEE', 'MMMM' 'd', 'yyyy", Locale.US);
+        formattedDate = displayFormatter.format(startDate)+" · "+time;
     }
 
     //methods
@@ -110,5 +113,9 @@ public class Event implements Comparable<Event> {
 
     public Date getEndDate() {
         return endDate;
+    }
+
+    public String getFormattedDate() {
+        return formattedDate;
     }
 }

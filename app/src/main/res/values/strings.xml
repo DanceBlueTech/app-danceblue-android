@@ -22,4 +22,6 @@
     <string name="donate">DONATE</string>
     <string name="contact">CONTACT</string>
     <string name="faq">FAQs</string>
+    <string name="this_week">THIS WEEK</string>
+    <string name="coming_up">COMING UP</string>
 </resources>
