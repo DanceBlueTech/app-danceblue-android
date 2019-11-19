@@ -10,6 +10,8 @@ public class splash extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
+        //Forces the app to wait on the splash screen for 3000 milliseconds/3 seconds, then
+        // launches the main activity.
         Thread timerThread = new Thread() {
             public void run() {
                 try {

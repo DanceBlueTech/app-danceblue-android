@@ -20,6 +20,7 @@ public class raveHour extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rave_hour);
 
+        //Instantiates the color list, pulling the colors array located in arrays.xml
         String[] colorsTxt = getApplicationContext().getResources().getStringArray(R.array.colors);
         for (String s : colorsTxt) {
             int newColor = Color.parseColor(s);
@@ -28,6 +29,8 @@ public class raveHour extends AppCompatActivity {
         runnable.run();
     }
 
+    //Runs until activity is left. Cycles between the three colors every 200 milliseconds,
+    // resetting index to 0 when the end of the loop is reached.
     private Runnable runnable = new Runnable(){
         @Override
         public void run(){

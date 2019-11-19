@@ -12,6 +12,7 @@ public class viewContact extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_contact);
 
+        //Finds webview object and loads the following url
         WebView contact = findViewById(R.id.contactViewer);
         contact.loadUrl("http://www.danceblue.org/meet-the-team/");
     }

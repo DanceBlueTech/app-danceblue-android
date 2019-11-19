@@ -12,6 +12,7 @@ public class viewDonate extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_donate);
 
+        //Finds webview object and loads the following url
         WebView contact = findViewById(R.id.donateViewer);
         contact.loadUrl("https://danceblue.networkforgood.com");
     }

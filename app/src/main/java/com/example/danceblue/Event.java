@@ -20,25 +20,28 @@ public class Event implements Comparable<Event> {
     public Event(DataSnapshot dataSnapshot) {
         isValid = true; //assume the created object is valid until proven otherwise
 
-        //read DB data, null-safely convert to strings
+        //read DB data, convert to strings after checking for nulls
         Object tempAddr = dataSnapshot.child("address").getValue();
-        address = (tempAddr != null) ? tempAddr.toString() : "";
         Object tempDescr = dataSnapshot.child("description").getValue();
-        description = (tempDescr != null) ? tempDescr.toString() : "";
         Object tempEndTime = dataSnapshot.child("endTime").getValue();
-        String endTimeString = (tempEndTime != null) ? tempEndTime.toString() : "";
         Object tempId = dataSnapshot.child("id").getValue();
-        id = (tempId != null) ? tempId.toString() : "";
         Object tempImg = dataSnapshot.child("image").getValue();
-        imageURL = (tempImg != null) ? tempImg.toString() : "";
         Object tempMap = dataSnapshot.child("map").getValue();
-        mapURL = (tempMap != null) ? tempMap.toString() : "";
         Object tempTime = dataSnapshot.child("time").getValue();
-        time = (tempTime != null) ? tempTime.toString() : "";
         Object tempTimestamp = dataSnapshot.child("timestamp").getValue();
-        String startTimeString = (tempTimestamp != null) ? tempTimestamp.toString() : "";
         Object tempTitle = dataSnapshot.child("title").getValue();
+
+        //convert to strings, checking for null DB children
+        address = (tempAddr != null) ? tempAddr.toString() : "";
+        description = (tempDescr != null) ? tempDescr.toString() : "";
         title = (tempTitle != null) ? tempTitle.toString() : "";
+        time = (tempTime != null) ? tempTime.toString() : "";
+        id = (tempId != null) ? tempId.toString() : "";
+        imageURL = (tempImg != null) ? tempImg.toString() : "";
+        mapURL = (tempMap != null) ? tempMap.toString() : "";
+        String startTimeString = (tempTimestamp != null) ? tempTimestamp.toString() : "";
+        String endTimeString = (tempEndTime != null) ? tempEndTime.toString() : "";
+
 
         //check for invalid db info before trying to make Date objects
         if (address.equals("") || description.equals("") || endTimeString.equals("") ||
