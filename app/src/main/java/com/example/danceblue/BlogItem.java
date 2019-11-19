@@ -19,6 +19,7 @@ public class BlogItem implements Comparable<BlogItem>{
 
     public BlogItem (DataSnapshot dataSnapshot){
         isValid = true; //assume valid info passed until proved otherwise
+
         //read id
         Object tempId = dataSnapshot.child("id").getValue();
 
@@ -37,6 +38,7 @@ public class BlogItem implements Comparable<BlogItem>{
         id = (tempId != null) ? tempId.toString() : "";
         author = (tempAuthor != null) ? tempAuthor.toString() : "";
         title = (tempTitle != null) ? tempTitle.toString() : "";
+        imageURL = (tempImage != null) ? tempImage.toString() : "";
         String timestamp = (tempTimeStamp != null) ? tempTimeStamp.toString() : "";
 
         //check validity of each string created above before moving on

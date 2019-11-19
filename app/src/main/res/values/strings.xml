@@ -24,4 +24,6 @@
     <string name="faq">FAQs</string>
     <string name="this_week">THIS WEEK</string>
     <string name="coming_up">COMING UP</string>
+    <string name="featured">FEATURED</string>
+    <string name="recent">RECENT</string>
 </resources>
