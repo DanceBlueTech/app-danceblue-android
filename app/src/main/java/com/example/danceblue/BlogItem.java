@@ -9,6 +9,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+//This class defines the BlogItem object to be used and displayed on the blog page.
+// Each item on that page is an BlogItem type object
 public class BlogItem implements Comparable<BlogItem>{
     private boolean isValid;
     private String id, imageURL, author, title;

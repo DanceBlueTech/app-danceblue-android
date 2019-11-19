@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.webkit.WebView;
 
+//This class handles opening the contact Webview. Layout can be found in activity_view_contact.xml
 public class viewContact extends AppCompatActivity {
 
     @Override

@@ -9,6 +9,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+//This class defines the Event object to be used and displayed on the events page.
+// Each item on that page is an Event type object
 public class Event implements Comparable<Event> {
     //data members
     private boolean isValid;

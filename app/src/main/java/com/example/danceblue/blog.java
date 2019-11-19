@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+//This class defines the blog fragment, and the operations that it entails. The layout for the fragment
+// can be found in blog.xml
 public class blog extends Fragment {
     @Nullable
     @Override

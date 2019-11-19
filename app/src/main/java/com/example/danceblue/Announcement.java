@@ -9,6 +9,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+//This class defines the Announcement object to be used and displayed on the home page.
+// Each item on that page is an Announcement type object
 public class Announcement implements Comparable<Announcement> {
     //data members
     private boolean isValid;

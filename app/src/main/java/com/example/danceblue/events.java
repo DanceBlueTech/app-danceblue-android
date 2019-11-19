@@ -21,6 +21,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Collections;
 
+//This class defines the events fragment, and the operations that it entails. The layout for the fragment
+// can be found in events.xml
 public class events extends Fragment {
     //data members
     private DatabaseReference databaseReference;

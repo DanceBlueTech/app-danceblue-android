@@ -14,11 +14,11 @@ public class splash extends Activity {
         // launches the main activity.
         Thread timerThread = new Thread() {
             public void run() {
-                try {
+                try { //sleep for 3000 milliseconds
                     sleep(3000);
-                } catch (InterruptedException e) {
+                } catch (InterruptedException e) { //if fail, display stack trace
                     e.printStackTrace();
-                } finally {
+                } finally { //after 3000 milliseconds, launch MainActivity.class
                     Intent intent = new Intent(splash.this, MainActivity.class);
                     startActivity(intent);
                 }

@@ -12,6 +12,8 @@ import android.widget.ImageButton;
 
 import java.util.Objects;
 
+//This class defines the more fragment, and the operations that it entails. The layout for the fragment
+// can be found in more.xml
 public class more extends Fragment {
     @Nullable
     @Override
@@ -23,6 +25,7 @@ public class more extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //Links to the donate button, and creates a listener that launches the viewDonate class when clicked.
         ImageButton donateButton = Objects.requireNonNull(getView()).findViewById(R.id.Donate);
         donateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -32,6 +35,7 @@ public class more extends Fragment {
             }
         });
 
+        //Links to the faqw button, and creates a listener that launches the viewFAQ class when clicked.
         ImageButton faqButton = Objects.requireNonNull(getView()).findViewById(R.id.FAQs);
         faqButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,6 +45,7 @@ public class more extends Fragment {
             }
         });
 
+        //Links to the contact button, and creates a listener that launches the viewContact class when clicked.
         ImageButton contactButton = Objects.requireNonNull(getView()).findViewById(R.id.Contact);
         contactButton.setOnClickListener(new View.OnClickListener() {
             @Override

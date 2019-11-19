@@ -30,6 +30,8 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
+//This class defines the home fragment, and the operations that it entails. The layout for the fragment
+// can be found in home.xml
 public class home extends Fragment {
     private SimpleDateFormat formatter; //declared as data members so inner classes can access
     private Date countdownEnd, countdownStart;

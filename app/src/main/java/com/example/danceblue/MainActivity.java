@@ -14,6 +14,10 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+//The main activity of the app that is launched after the splash screen.
+//The main activity contains a toolbar at the top that displays current
+// viewed page along with the rave hour button, the center fragment that switches between the home, blog, event,
+// and more pages, and a bottom navigation bar to switch between the four fragment pages.
 public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new home()).commit();
 
-        //Instantiates and creates listener for rave button in toolbar.
+        //Instantiates and creates listener for rave button in toolbar. Click opens activity.
         ImageButton raveButton = findViewById(R.id.rave_button);
         raveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         toolbarTitle.setText(Title);
     }
 
-    //This function handles switching between the different fragments that the main
+    //This is a listener that handles switching between the different fragments that the main
     // activity is displaying. Defaults to home.
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -77,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                             break;
                     }
 
-                    //Commits change, loads new fragment
+                    //Commits change to selected fragment from above and loads this new fragment
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                             selectedFragment).commit();
 

@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+//This class handles displaying the db_floormap.png image.
+// Layout can be found in activity_view_layout.xml
 public class viewLayout extends AppCompatActivity {
 
     @Override
