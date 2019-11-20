@@ -25,32 +25,43 @@ public class more extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //Links to the donate button, and creates a listener that launches the viewDonate class when clicked.
+        //Links to the donate button, and creates a listener that launches the webViewer class when clicked.
+        // Passes link that is to be opened in the bundle donateB.
         ImageButton donateButton = Objects.requireNonNull(getView()).findViewById(R.id.Donate);
         donateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), viewDonate.class);
+                Intent intent = new Intent(getActivity(), WebViewer.class);
+                Bundle donateB = new Bundle();
+                donateB.putString("link", "https://danceblue.networkforgood.com");
+                intent.putExtras(donateB);
                 startActivity(intent);
             }
         });
 
-        //Links to the faqw button, and creates a listener that launches the viewFAQ class when clicked.
+        //Links to the faq button, and creates a listener that launches the webViewer class when clicked.
+        // Passes link that is to be opened in the bundle faqB.
         ImageButton faqButton = Objects.requireNonNull(getView()).findViewById(R.id.FAQs);
         faqButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), viewFAQ.class);
+                Intent intent = new Intent(getActivity(), WebViewer.class);
+                Bundle faqB = new Bundle();
+                faqB.putString("link", "http://www.danceblue.org/frequently-asked-questions/");
+                intent.putExtras(faqB);
                 startActivity(intent);
             }
         });
 
-        //Links to the contact button, and creates a listener that launches the viewContact class when clicked.
+        //Links to the contact button, and creates a listener that launches the webViewer class when clicked.
         ImageButton contactButton = Objects.requireNonNull(getView()).findViewById(R.id.Contact);
         contactButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), viewContact.class);
+                Intent intent = new Intent(getActivity(), WebViewer.class);
+                Bundle contactB = new Bundle();
+                contactB.putString("link", "http://www.danceblue.org/meet-the-team/");
+                intent.putExtras(contactB);
                 startActivity(intent);
             }
         });
