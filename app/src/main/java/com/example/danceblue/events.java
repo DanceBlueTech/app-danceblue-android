@@ -1,9 +1,12 @@
 package com.example.danceblue;
 
+import android.app.Activity;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -149,7 +152,7 @@ public class events extends Fragment {
     private void remakeThisWeekView() {
         Collections.sort(thisWeekAL); //sort the events by ascending start time, implemented in Event.java
         thisWeekLL.removeAllViews(); //clear the layout
-        for (Event event1 : thisWeekAL) { //do for each event in the data arraylist
+        for (final Event event1 : thisWeekAL) { //do for each event in the data arraylist
             ImageView imageView = new ImageView(getActivity()); //make the image view
             Picasso.get().load(event1.getImageURL()).into(imageView);
             TextView textView = new TextView(getActivity()); //make the title view
@@ -161,6 +164,13 @@ public class events extends Fragment {
             linearLayout.addView(imageView); //add the constituent views
             linearLayout.addView(textView);
             linearLayout.addView(textView1);
+            //make the view clickable to open details
+            linearLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openEventDetails(event1);
+                }
+            });
             thisWeekLL.addView(linearLayout); //add the layout to the screen
             view.invalidate(); //queue a redraw of the page with the new events
         }
@@ -172,7 +182,7 @@ public class events extends Fragment {
     private void remakeComingUpView() {
         Collections.sort(comingUpAL);
         comingUpLL.removeAllViews();
-        for (Event event1 : comingUpAL) {
+        for (final Event event1 : comingUpAL) {
             ImageView imageView = new ImageView(getActivity());
             Picasso.get().load(event1.getImageURL()).into(imageView);
             TextView textView = new TextView(getActivity());
@@ -184,8 +194,37 @@ public class events extends Fragment {
             linearLayout.addView(imageView);
             linearLayout.addView(textView);
             linearLayout.addView(textView1);
+            linearLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openEventDetails(event1);
+                }
+            });
             comingUpLL.addView(linearLayout);
             view.invalidate();
         }
+    }
+
+    //called in the onClick listeners of anonymous LinearLayouts made in the remake functions above
+    //extracts relevant info from the event object into a bundle to be used in details fragment
+    private void openEventDetails(Event event) {
+        Bundle args = new Bundle(); //bundle the needed info
+        ArrayList<String> stringsAL = new ArrayList<>();
+        stringsAL.add(event.getImageURL());
+        stringsAL.add(event.getTitle());
+        stringsAL.add(event.getFormattedDate());
+        stringsAL.add(event.getDescription());
+        stringsAL.add(event.getMapURL());
+        stringsAL.add(event.getAddress());
+        stringsAL.add(event.getStartString());
+        stringsAL.add(event.getEndString());
+        stringsAL.add(event.getTime());
+        args.putStringArrayList("stringsAL", stringsAL);
+
+        EventDetails detailsFragment = new EventDetails(); //make the new fragment
+        detailsFragment.setArguments(args); //attach the bundled info
+        //replace the whole tabs fragment with the details fragment
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                detailsFragment).addToBackStack(null).commit();
     }
 }

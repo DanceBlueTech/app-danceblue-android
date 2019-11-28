@@ -14,7 +14,7 @@ import java.util.Locale;
 public class Event implements Comparable<Event> {
     //data members
     private boolean isValid;
-    private String address, description, id, imageURL, mapURL, time, title, formattedDate;
+    private String address, description, id, imageURL, mapURL, time, title, formattedDate, startString, endString;
     private Date startDate, endDate;
     private static final String TAG = "Event.java";
 
@@ -41,14 +41,14 @@ public class Event implements Comparable<Event> {
         id = (tempId != null) ? tempId.toString() : "";
         imageURL = (tempImg != null) ? tempImg.toString() : "";
         mapURL = (tempMap != null) ? tempMap.toString() : "";
-        String startTimeString = (tempTimestamp != null) ? tempTimestamp.toString() : "";
-        String endTimeString = (tempEndTime != null) ? tempEndTime.toString() : "";
+        startString = (tempTimestamp != null) ? tempTimestamp.toString() : "";
+        endString = (tempEndTime != null) ? tempEndTime.toString() : "";
 
 
         //check for invalid db info before trying to make Date objects
-        if (address.equals("") || description.equals("") || endTimeString.equals("") ||
+        if (address.equals("") || description.equals("") || endString.equals("") ||
                 id.equals("") || imageURL.equals("") || mapURL.equals("") || time.equals("") ||
-                startTimeString.equals("") || title.equals("")) {
+                startString.equals("") || title.equals("")) {
             isValid = false;
             return;
         }
@@ -56,14 +56,14 @@ public class Event implements Comparable<Event> {
         //make startDate and endDate Date objects
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
         try {
-            endDate = formatter.parse(endTimeString);
+            endDate = formatter.parse(endString);
         } catch (ParseException e) {
             Log.e(TAG, "event endDate couldn't be parsed!");
             Log.e(TAG, e.getMessage());
             isValid = false;
         }
         try {
-            startDate = formatter.parse(startTimeString);
+            startDate = formatter.parse(startString);
         } catch (ParseException e) {
             Log.e(TAG, "event startDate couldn't be parsed!");
             Log.e(TAG, e.getMessage());
@@ -122,5 +122,13 @@ public class Event implements Comparable<Event> {
 
     public String getFormattedDate() {
         return formattedDate;
+    }
+
+    public String getStartString() {
+        return startString;
+    }
+
+    public String getEndString() {
+        return endString;
     }
 }
