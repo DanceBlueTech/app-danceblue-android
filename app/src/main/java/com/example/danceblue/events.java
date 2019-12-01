@@ -223,7 +223,8 @@ public class events extends Fragment {
 
         EventDetails detailsFragment = new EventDetails(); //make the new fragment
         detailsFragment.setArguments(args); //attach the bundled info
-        //replace the whole tabs fragment with the details fragment
+        //replace the whole tabs fragment with the details fragment, adding to the backstack to
+        //enable back-button functionality
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 detailsFragment).addToBackStack(null).commit();
     }

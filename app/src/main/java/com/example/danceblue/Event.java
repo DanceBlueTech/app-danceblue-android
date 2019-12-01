@@ -50,6 +50,9 @@ public class Event implements Comparable<Event> {
                 id.equals("") || imageURL.equals("") || mapURL.equals("") || time.equals("") ||
                 startString.equals("") || title.equals("")) {
             isValid = false;
+            Log.e(TAG, getAddress()+" "+getDescription()+" "+getEndString()+" "+getId()+" "+
+                    getImageURL()+" "+getMapURL()+" "+getTime()+" "+getStartString()+" "+getTitle());
+            Log.d(TAG, "Announcement FAIL with: "+isValid()+" "+getId()+" "+getTitle());
             return;
         }
 
@@ -58,26 +61,29 @@ public class Event implements Comparable<Event> {
         try {
             endDate = formatter.parse(endString);
         } catch (ParseException e) {
-            Log.e(TAG, "event endDate couldn't be parsed!");
+            Log.e(TAG, "event "+title+" endDate couldn't be parsed!");
             Log.e(TAG, e.getMessage());
             isValid = false;
         }
         try {
             startDate = formatter.parse(startString);
         } catch (ParseException e) {
-            Log.e(TAG, "event startDate couldn't be parsed!");
+            Log.e(TAG, "event "+title+" startDate couldn't be parsed!");
             Log.e(TAG, e.getMessage());
             isValid = false;
         }
 
         SimpleDateFormat displayFormatter = new SimpleDateFormat("EEEE', 'MMMM' 'd', 'yyyy", Locale.US);
         formattedDate = displayFormatter.format(startDate)+" · "+time;
+        Log.d(TAG, "Announcement made with: "+isValid()+" "+getId()+" "+getTitle());
     }
 
     //methods
     @Override //allows Collections.sort() to sort Event objects in ascending startDate order
     public int compareTo(Event o) {
-       return o.startDate.compareTo(this.startDate);
+       int ordering = this.startDate.compareTo(o.startDate);
+        Log.d(TAG, "ordering = "+ordering);
+        return ordering;
     }
 
     public boolean isValid() {
