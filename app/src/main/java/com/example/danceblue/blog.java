@@ -51,6 +51,7 @@ public class blog extends Fragment {
         recentAL = new ArrayList<>();
         this.view = view;
 
+        //Start of the blog code
         databaseReference.child("blog").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {

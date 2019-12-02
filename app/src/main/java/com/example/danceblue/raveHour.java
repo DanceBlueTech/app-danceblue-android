@@ -21,13 +21,19 @@ public class raveHour extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rave_hour);
 
-        //Instantiates the color list, pulling the colors array located in arrays.xml
+        //Instantiates the color list, pulling from the colors array located in arrays.xml
         String[] colorsTxt = getApplicationContext().getResources().getStringArray(R.array.colors);
         for (String s : colorsTxt) {
             int newColor = Color.parseColor(s);
             colors.add(newColor);
         }
         runnable.run();
+    }
+
+    //When activity is left, end it to save resources
+    protected void onPause(){
+        super.onPause();
+        finish();
     }
 
     //Runs until activity is left. Cycles between the three colors every 200 milliseconds,

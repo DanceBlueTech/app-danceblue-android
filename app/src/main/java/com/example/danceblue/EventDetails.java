@@ -63,6 +63,7 @@ public class EventDetails extends Fragment {
 
         LinearLayout linearLayout = view.findViewById(R.id.linearLayout);
 
+        //Sets up a button to save event information to the user's calendar.
         ImageButton calendarAddBtn = new ImageButton(getActivity());
         calendarAddBtn.setImageResource(R.drawable.baseline_add_black_24);
         calendarAddBtn.setOnClickListener(new View.OnClickListener() {
@@ -75,14 +76,17 @@ public class EventDetails extends Fragment {
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         linearLayout.addView(calendarAddBtn);
 
+        //Grabs and displays the image
         ImageView imageView = new ImageView(getActivity());
         Picasso.get().load(stringsMap.get("imgURL")).into(imageView);
         linearLayout.addView(imageView);
 
+        //Grabs and displays the title
         TextView titleView = new TextView(getActivity());
         titleView.setText(stringsMap.get("title"));
         linearLayout.addView(titleView);
 
+        //Grabs and displays the date
         TextView dateTimeView = new TextView(getActivity());
         dateTimeView.setText(stringsMap.get("formattedDate"));
         linearLayout.addView(dateTimeView);
