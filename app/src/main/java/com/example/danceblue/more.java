@@ -54,6 +54,7 @@ public class more extends Fragment {
         });
 
         //Links to the contact button, and creates a listener that launches the webViewer class when clicked.
+        // Passes link that is to be opened in the bundle contactB.
         ImageButton contactButton = Objects.requireNonNull(getView()).findViewById(R.id.Contact);
         contactButton.setOnClickListener(new View.OnClickListener() {
             @Override

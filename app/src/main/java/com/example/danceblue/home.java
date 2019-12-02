@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -20,6 +21,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -39,8 +41,9 @@ public class home extends Fragment {
         secText, secLabel;
     private CountDownTimer timer;
     //TODO dynamic background img will have to be declared up here too
-    private LinearLayout announcementsLL;
+    private LinearLayout announcementsLL, sponsorsLL;
     private ArrayList<Announcement> announcementsAL;
+    private ArrayList<Sponsor> sponsorsAL;
     private static final String TAG = "home.java";
     private View view;
     private DatabaseReference databaseRef;
@@ -161,8 +164,98 @@ public class home extends Fragment {
                 //intentionally left blank
             }
         });
+
+        //begin sponsor code
+        //layout to hold variable amount of sponsors
+        sponsorsLL = view.findViewById(R.id.sponsorLL);
+        //arraylist to hold sponsor objects that are in the layout above.
+        //allows the sponsors to be easily sorted and added/re/moved
+        sponsorsAL = new ArrayList<>();
+        //layout to hold variable amount of sponsors
+        databaseRef.child("sponsors").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Sponsor sponsor = new Sponsor(dataSnapshot);
+                if (sponsor.isValid()){
+                    sponsorsAL.add(sponsor);
+                    remakeSponsorView();
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Sponsor sponsor = new Sponsor(dataSnapshot); //make an sponsor object from the changed child
+                if (sponsor.isValid()) { //if a valid sponsor object was made
+                    for (Sponsor sponsor1 : sponsorsAL) { //check every sponsor in the current data arraylist
+                        if (sponsor.getLink().equals(sponsor1.getLink())) { //if the new link matches
+                            sponsorsAL.remove(sponsor1); //remove the old event w/ same link
+                        }
+                    }
+                    sponsorsAL.add(sponsor); //add it to the data arraylist
+                    remakeSponsorView(); //redraw the view with new data
+                }
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                Sponsor sponsor = new Sponsor(dataSnapshot); //make an sponsor object from the changed child
+                if (sponsor.isValid()) { //if a valid sponsor object was made
+                    for (Sponsor sponsor1 : sponsorsAL) { //check every sponsor in the current data arraylist
+                        if (sponsor.getLink().equals(sponsor1.getLink())) { //if the new link matches
+                            sponsorsAL.remove(sponsor1); //remove the old event w/ same link
+                        }
+                    }
+                    sponsorsAL.add(sponsor); //add it to the data arraylist
+                    remakeSponsorView(); //redraw the view with new data
+                }
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                //intentionally left blank
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                //intentionally left blank
+            }
+        });
     }
 
+    //remakes and draws the constituent views of the Sponsors section
+    private void remakeSponsorView() {
+        //emptyy sponsorsLL
+        sponsorsLL.removeAllViews();
+        for (final Sponsor spon : sponsorsAL) {
+            //Grab and load the image into an imageview
+            ImageView imageView = new ImageView(getActivity());
+            Picasso.get().load(spon.getImageURL()).into(imageView);
+
+            //Generate the new linearlayout to add to sponsorsLL
+            LinearLayout linearLayout = new LinearLayout(getActivity());
+            linearLayout.setOrientation(LinearLayout.HORIZONTAL); //force it to be horizontal
+            linearLayout.addView(imageView);
+
+            //Sets an action to each image, causing them to open link on WebViewer whenever clicked.
+            linearLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), WebViewer.class);
+                    Bundle sponB = new Bundle();
+                    sponB.putString("link", spon.getLink());
+                    intent.putExtras(sponB);
+                    startActivity(intent);
+                }
+            });
+
+            //Add to sponsorsLL, then redraw the view
+            sponsorsLL.addView(linearLayout);
+            view.invalidate();
+        }
+    }
+
+    //Below re-instantiates the countdown timer when the user returns to home.
+    // If not included, countdown timer freezes when user loads a new activity or fragment.
     @Override
     public void onResume() {
         super.onResume();

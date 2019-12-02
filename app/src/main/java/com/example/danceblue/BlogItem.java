@@ -1,6 +1,5 @@
 package com.example.danceblue;
 
-import android.provider.ContactsContract;
 import android.util.Log;
 import com.google.firebase.database.DataSnapshot;
 
@@ -10,7 +9,6 @@ import java.util.Date;
 import java.util.Locale;
 
 //This class defines the BlogItem object to be used and displayed on the blog page.
-// Each item on that page is an BlogItem type object
 public class BlogItem implements Comparable<BlogItem>{
     private boolean isValid;
     private String id, imageURL, author, title;
@@ -30,7 +28,8 @@ public class BlogItem implements Comparable<BlogItem>{
         Object tempTimeStamp = detailsSnapshot.child("timestamp").getValue();
         Object tempImage = detailsSnapshot.child("image").getValue();
 
-        //TODO finish this section. Add conversions to strings and validity checks after finishing.
+        //TODO Finish this section by adding ways to get paragraphs.
+        //TODO Add conversions to strings and validity checks after finishing.
         //read article info
         DataSnapshot chunksSnapshot = dataSnapshot.child("chunks");
 

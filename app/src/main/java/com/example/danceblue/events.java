@@ -153,17 +153,23 @@ public class events extends Fragment {
         Collections.sort(thisWeekAL); //sort the events by ascending start time, implemented in Event.java
         thisWeekLL.removeAllViews(); //clear the layout
         for (final Event event1 : thisWeekAL) { //do for each event in the data arraylist
-            ImageView imageView = new ImageView(getActivity()); //make the image view
+            //Grab and load image
+            ImageView imageView = new ImageView(getActivity());
             Picasso.get().load(event1.getImageURL()).into(imageView);
-            TextView textView = new TextView(getActivity()); //make the title view
+            //Grab and load the title
+            TextView textView = new TextView(getActivity());
             textView.setText(event1.getTitle());
-            TextView textView1 = new TextView(getActivity()); //make the event date/time view
+            //Grab and load the date
+            TextView textView1 = new TextView(getActivity());
             textView1.setText(event1.getFormattedDate());
-            LinearLayout linearLayout = new LinearLayout(getActivity()); //make a layout to hold above views
+
+            //Generate the new linearlayout to add above information to.
+            LinearLayout linearLayout = new LinearLayout(getActivity());
             linearLayout.setOrientation(LinearLayout.VERTICAL);
-            linearLayout.addView(imageView); //add the constituent views
+            linearLayout.addView(imageView);
             linearLayout.addView(textView);
             linearLayout.addView(textView1);
+
             //make the view clickable to open details
             linearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -171,8 +177,10 @@ public class events extends Fragment {
                     openEventDetails(event1);
                 }
             });
-            thisWeekLL.addView(linearLayout); //add the layout to the screen
-            view.invalidate(); //queue a redraw of the page with the new events
+
+            //Add to thisWeekLL, then redraw the view.
+            thisWeekLL.addView(linearLayout);
+            view.invalidate();
         }
     }
 
@@ -183,23 +191,32 @@ public class events extends Fragment {
         Collections.sort(comingUpAL);
         comingUpLL.removeAllViews();
         for (final Event event1 : comingUpAL) {
+            //Grab and load image
             ImageView imageView = new ImageView(getActivity());
             Picasso.get().load(event1.getImageURL()).into(imageView);
+            //Grab and load title
             TextView textView = new TextView(getActivity());
             textView.setText(event1.getTitle());
+            //Grab and load date
             TextView textView1 = new TextView(getActivity());
             textView1.setText(event1.getFormattedDate());
+
+            //Generate the new linearlayout to add above information to.
             LinearLayout linearLayout = new LinearLayout(getActivity());
             linearLayout.setOrientation(LinearLayout.VERTICAL);
             linearLayout.addView(imageView);
             linearLayout.addView(textView);
             linearLayout.addView(textView1);
+
+            //Create a listener that loads the event detail on click.
             linearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     openEventDetails(event1);
                 }
             });
+
+            //Add to comingUpLL, then redraw the view.
             comingUpLL.addView(linearLayout);
             view.invalidate();
         }

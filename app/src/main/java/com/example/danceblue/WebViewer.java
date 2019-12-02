@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.webkit.WebView;
 
 //This class displays a webview, which opens a webpage inside the app.
-// The website to be displayed is determined by which variable is passed from more.
+// The website to be displayed is determined by which variable is passed from more.java.
 public class WebViewer extends AppCompatActivity {
 
     @Override

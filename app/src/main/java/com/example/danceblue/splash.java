@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-// TODO fix the logo in the splash image, it is slightly off center right now
+
 public class splash extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +27,7 @@ public class splash extends Activity {
         timerThread.start();
     }
 
+    //when the activity is left, end it to save resources
     @Override
     protected void onPause() {
         super.onPause();
