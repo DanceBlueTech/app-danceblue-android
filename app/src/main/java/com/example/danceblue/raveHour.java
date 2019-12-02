@@ -31,6 +31,7 @@ public class raveHour extends AppCompatActivity {
     }
 
     //When activity is left, end it to save resources
+    @Override
     protected void onPause(){
         super.onPause();
         finish();

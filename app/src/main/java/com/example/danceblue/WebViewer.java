@@ -23,4 +23,11 @@ public class WebViewer extends AppCompatActivity {
             webpage.loadUrl(b.getString("link"));
         }
     }
+
+    //when the activity is left, end it to save resources
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
+    }
 }
