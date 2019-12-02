@@ -13,4 +13,11 @@ public class viewLayout extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_layout);
     }
+
+    //when the activity is left, end it to save resources
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
+    }
 }
