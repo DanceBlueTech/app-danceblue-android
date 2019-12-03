@@ -1,5 +1,6 @@
 package com.example.danceblue;
 
+import android.content.Context;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,11 +32,13 @@ public class blog extends Fragment {
     private LinearLayout featuredLL, recentLL;
     private ArrayList<BlogItem> featuredAL, recentAL;
     private View view;
+    private Context context;
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        context = getContext();
         return inflater.inflate(R.layout.blog, container, false);
     }
 
@@ -52,20 +55,45 @@ public class blog extends Fragment {
         this.view = view;
 
         //Start of the blog code
+        //Listen to the 'blog' child.
+        // As I understand it the newest story is 'featured', the rest are recent.
+        //TODO currently prints all to recent, need to come up with way to display first in featured.
         databaseReference.child("blog").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
+                BlogItem blog = new BlogItem(dataSnapshot); //make a blog from the added child
+                if (blog.isValid()){
+                    recentAL.add(blog);
+                    Collections.sort(recentAL);
+                    remakeRecentView();
+                }
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
+                BlogItem blog = new BlogItem(dataSnapshot); //make a blog from the added child
+                if (blog.isValid()){
+                    for (BlogItem blog1 : recentAL){
+                        if (blog.getId().equals(blog1.getId())) { //if the new id matches
+                            recentAL.remove(blog1); //remove the old blog w/ same id
+                        }
+                    }
+                    recentAL.add(blog); //add it to the data arraylist
+                    remakeRecentView(); //redraw the view with new data
+                }
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
+                BlogItem blog = new BlogItem(dataSnapshot); //make a blog from the added child
+                if (blog.isValid()){
+                    for (BlogItem blog1 : recentAL){
+                        if (blog.getId().equals(blog1.getId())) { //if the new id matches
+                            recentAL.remove(blog1); //remove the old blog w/ same id
+                        }
+                    }
+                    remakeRecentView(); //redraw the view with new data
+                }
             }
 
             @Override
@@ -96,7 +124,7 @@ public class blog extends Fragment {
             textViewAuthor.setText(blog1.getAuthor());
             //Grab and load date
             TextView textViewDate = new TextView(getActivity());
-            textViewDate.setText(blog1.getDate());
+            textViewDate.setText(blog1.getFormattedDate());
 
             //Generate the new linearlayout to add above information to.
             LinearLayout linearLayout = new LinearLayout(getActivity());
@@ -128,20 +156,20 @@ public class blog extends Fragment {
         recentLL.removeAllViews();
         for (final BlogItem blog1 : recentAL) {
             //Grab and load image
-            ImageView imageView = new ImageView(getActivity());
+            ImageView imageView = new ImageView(context);
             Picasso.get().load(blog1.getImageURL()).into(imageView);
             //Grab and load title
-            TextView textViewTitle = new TextView(getActivity());
+            TextView textViewTitle = new TextView(context);
             textViewTitle.setText(blog1.getTitle());
             //Grab and load author
-            TextView textViewAuthor = new TextView(getActivity());
+            TextView textViewAuthor = new TextView(context);
             textViewAuthor.setText(blog1.getAuthor());
             //Grab and load date
-            TextView textViewDate = new TextView(getActivity());
-            textViewDate.setText(blog1.getDate());
+            TextView textViewDate = new TextView(context);
+            textViewDate.setText(blog1.getFormattedDate());
 
             //Generate the new linearlayout to add above information to.
-            LinearLayout linearLayout = new LinearLayout(getActivity());
+            LinearLayout linearLayout = new LinearLayout(context);
             linearLayout.setOrientation(LinearLayout.VERTICAL);
             linearLayout.addView(imageView);
             linearLayout.addView(textViewTitle);

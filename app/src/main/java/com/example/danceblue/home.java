@@ -188,7 +188,7 @@ public class home extends Fragment {
                 if (sponsor.isValid()) { //if a valid sponsor object was made
                     for (Sponsor sponsor1 : sponsorsAL) { //check every sponsor in the current data arraylist
                         if (sponsor.getLink().equals(sponsor1.getLink())) { //if the new link matches
-                            sponsorsAL.remove(sponsor1); //remove the old event w/ same link
+                            sponsorsAL.remove(sponsor1); //remove the old sponsor w/ same link
                         }
                     }
                     sponsorsAL.add(sponsor); //add it to the data arraylist
@@ -202,10 +202,9 @@ public class home extends Fragment {
                 if (sponsor.isValid()) { //if a valid sponsor object was made
                     for (Sponsor sponsor1 : sponsorsAL) { //check every sponsor in the current data arraylist
                         if (sponsor.getLink().equals(sponsor1.getLink())) { //if the new link matches
-                            sponsorsAL.remove(sponsor1); //remove the old event w/ same link
+                            sponsorsAL.remove(sponsor1); //remove the old sponsor w/ same link
                         }
                     }
-                    sponsorsAL.add(sponsor); //add it to the data arraylist
                     remakeSponsorView(); //redraw the view with new data
                 }
             }
