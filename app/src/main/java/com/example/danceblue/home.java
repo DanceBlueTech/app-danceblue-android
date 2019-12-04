@@ -88,16 +88,7 @@ public class home extends Fragment {
                 if (announcement.isValid()) { //if the new child had no null fields
                     announcementsAL.add(announcement); //add to data to be drawn
                     Collections.sort(announcementsAL); //sort the data for the layout by timestamp
-                    announcementsLL.removeAllViews(); //clear the layout
-                    for (Announcement announcement1 : announcementsAL) { //redraw layout w/ new order
-                        //todo make imageView from announcement1.getImageURL(), add to horizontal sub layout
-                        TextView textView = new TextView(getActivity());
-                        textView.setText(announcement1.getText());
-                        LinearLayout horizontalLL = new LinearLayout(getActivity()); //horizontal by default
-                        horizontalLL.addView(textView);
-                        announcementsLL.addView(horizontalLL);//add the new img/text to announcements view
-                        view.invalidate(); //schedule a redraw
-                    }
+                    remakeAnnouncementView();
                 }
             }
 
@@ -115,16 +106,7 @@ public class home extends Fragment {
                     }
                     announcementsAL.add(announcement); //add to data to be drawn
                     Collections.sort(announcementsAL); //sort the data for the layout by timestamp
-                    announcementsLL.removeAllViews(); //clear the layout
-                    for (Announcement announcement1 : announcementsAL) { //redraw layout w/ new order
-                        //todo make imageView from announcement1.getImageURL(), add to horizontal sub layout
-                        TextView textView = new TextView(getActivity());
-                        textView.setText(announcement1.getText());
-                        LinearLayout horizontalLL = new LinearLayout(getActivity()); //horizontal by default
-                        horizontalLL.addView(textView);
-                        announcementsLL.addView(horizontalLL);//add the new img/text to announcements view
-                        view.invalidate(); //schedule a redraw
-                    }
+                    remakeAnnouncementView();
                 }
             }
 
@@ -141,16 +123,7 @@ public class home extends Fragment {
                         }
                     }
                     Collections.sort(announcementsAL); //sort the data for the layout by timestamp
-                    announcementsLL.removeAllViews(); //clear the layout
-                    for (Announcement announcement1 : announcementsAL) { //redraw layout w/ new order
-                        //todo make imageView from announcement1.getImageURL(), add to horizontal sub layout
-                        TextView textView = new TextView(getActivity());
-                        textView.setText(announcement1.getText());
-                        LinearLayout horizontalLL = new LinearLayout(getActivity()); //horizontal by default
-                        horizontalLL.addView(textView);
-                        announcementsLL.addView(horizontalLL);//add the new img/text to announcements view
-                        view.invalidate(); //schedule a redraw
-                    }
+                    remakeAnnouncementView();
                 }
             }
 
@@ -221,9 +194,32 @@ public class home extends Fragment {
         });
     }
 
+    //remakes and draws the constituent views of the Announcement section
+    private void remakeAnnouncementView(){
+        //empty AnnouncementLL
+        announcementsLL.removeAllViews();
+        for (final Announcement anno : announcementsAL){
+            //TODO add code to display image here. Or if image never changes grab it from Firebase
+            //     and turn it into an image asset locally.
+
+            //Grab and load the text into a textview
+            TextView textView = new TextView(getActivity());
+            textView.setText(anno.getText());
+
+            //Generate the new linearlayout to add to AnnouncementLL
+            LinearLayout linearLayout = new LinearLayout(getActivity());
+            linearLayout.setOrientation(LinearLayout.HORIZONTAL); //force it to be horizontal
+            linearLayout.addView(textView);
+
+            //Add to announcementsLL, then redraw the view
+            announcementsLL.addView(linearLayout);
+            view.invalidate();
+        }
+    }
+
     //remakes and draws the constituent views of the Sponsors section
     private void remakeSponsorView() {
-        //emptyy sponsorsLL
+        //empty sponsorsLL
         sponsorsLL.removeAllViews();
         for (final Sponsor spon : sponsorsAL) {
             //Grab and load the image into an imageview

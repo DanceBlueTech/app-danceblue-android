@@ -30,7 +30,7 @@ public class Sponsor {
             return;
         }
 
-        Log.d(TAG, "Announcement made with: "+isValid()+" "+getLink()+" "+getImageURL());
+        Log.d(TAG, "Sponsor made with: "+isValid()+" "+getLink()+" "+getImageURL());
     }
 
     //methods
