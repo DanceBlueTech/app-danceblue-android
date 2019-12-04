@@ -173,10 +173,10 @@
             app:layout_constraintTop_toBottomOf="@id/sponsor_title">
             <LinearLayout
                 android:id="@+id/sponsorLL"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:orientation="horizontal">
-            </LinearLayout>
+        </LinearLayout>
         </HorizontalScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
