@@ -91,20 +91,16 @@ public class EventDetails extends Fragment {
         dateTimeView.setText(stringsMap.get("formattedDate"));
         linearLayout.addView(dateTimeView);
 
-        TextView descriptionTitleView = new TextView(getActivity());
+        TextView descriptionTitleView = new TextView(getActivity(), null, R.style.TitleFont);
         descriptionTitleView.setText(getString(R.string.description_title));
-        descriptionTitleView.setTypeface(descriptionTitleView.getTypeface(),
-                Typeface.BOLD);
         linearLayout.addView(descriptionTitleView);
 
         TextView descriptionView = new TextView(getActivity());
         descriptionView.setText(stringsMap.get("description"));
         linearLayout.addView(descriptionView);
 
-        TextView directionsTitleView = new TextView(getActivity());
+        TextView directionsTitleView = new TextView(getActivity(), null, R.style.TitleFont);
         directionsTitleView.setText(getString(R.string.directions_title));
-        directionsTitleView.setTypeface(directionsTitleView.getTypeface(),
-                Typeface.BOLD);
         linearLayout.addView(directionsTitleView);
 
         ImageButton directionsBtn = new ImageButton(getActivity());
