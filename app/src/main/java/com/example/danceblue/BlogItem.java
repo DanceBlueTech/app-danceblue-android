@@ -83,6 +83,6 @@ public class BlogItem implements Comparable<BlogItem>{
 
     @Override //allows Collections.sort() to sort these objects in descending order by date
     public int compareTo(BlogItem o) {
-        return this.date.compareTo(o.date);
+        return o.date.compareTo(this.date);
     }
 }

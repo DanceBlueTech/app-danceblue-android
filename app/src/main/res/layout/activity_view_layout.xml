@@ -9,10 +9,11 @@
 
     <ImageView
         android:id="@+id/DB_layout"
-        android:layout_width="409dp"
-        android:layout_height="383dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:contentDescription="@string/db_layout"
         android:scaleType="fitXY"
+        android:adjustViewBounds="true"
         android:src="@drawable/db_floormap"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
