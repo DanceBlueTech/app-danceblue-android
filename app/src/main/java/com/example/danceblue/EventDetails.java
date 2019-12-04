@@ -1,5 +1,7 @@
 package com.example.danceblue;
+import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -103,12 +105,18 @@ public class EventDetails extends Fragment {
         directionsTitleView.setText(getString(R.string.directions_title));
         linearLayout.addView(directionsTitleView);
 
+
+
         ImageButton directionsBtn = new ImageButton(getActivity());
         Picasso.get().load(stringsMap.get("mapURL")).into(directionsBtn);
         directionsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //todo open map app w/ directions to address
+            Uri gmmIntentUri = Uri.parse("geo:0,0?q="+stringsMap.get("address"));
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+            mapIntent.setPackage("com.google.android.apps.maps");
+            startActivity(mapIntent);
             }
         });
         linearLayout.addView(directionsBtn);
