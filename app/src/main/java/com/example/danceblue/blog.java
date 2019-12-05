@@ -1,6 +1,7 @@
 package com.example.danceblue;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,7 +21,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -29,8 +29,8 @@ import java.util.Collections;
 public class blog extends Fragment {
     //data members
     private DatabaseReference databaseReference;
-    private LinearLayout featuredLL, recentLL;
-    private ArrayList<BlogItem> featuredAL, recentAL;
+    private LinearLayout entriesLL;
+    private ArrayList<BlogItem> blogEntries;
     private View view;
     private Context context;
 
@@ -48,10 +48,8 @@ public class blog extends Fragment {
 
         //setup
         databaseReference = FirebaseDatabase.getInstance().getReference();
-        featuredLL = view.findViewById(R.id.featruedLL);
-        recentLL = view.findViewById(R.id.recentLL);
-        featuredAL = new ArrayList<>();
-        recentAL = new ArrayList<>();
+        entriesLL = view.findViewById(R.id.entriesLL);
+        blogEntries = new ArrayList<>();
         this.view = view;
 
         //Start of the blog code
@@ -63,9 +61,9 @@ public class blog extends Fragment {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 BlogItem blog = new BlogItem(dataSnapshot); //make a blog from the added child
                 if (blog.isValid()){
-                    recentAL.add(blog);
-                    Collections.sort(recentAL);
-                    remakeRecentView();
+                    blogEntries.add(blog);
+                    Collections.sort(blogEntries);
+                    remakeEntriesView();
                 }
             }
 
@@ -73,13 +71,13 @@ public class blog extends Fragment {
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 BlogItem blog = new BlogItem(dataSnapshot); //make a blog from the added child
                 if (blog.isValid()){
-                    for (BlogItem blog1 : recentAL){
+                    for (BlogItem blog1 : blogEntries){
                         if (blog.getId().equals(blog1.getId())) { //if the new id matches
-                            recentAL.remove(blog1); //remove the old blog w/ same id
+                            blogEntries.remove(blog1); //remove the old blog w/ same id
                         }
                     }
-                    recentAL.add(blog); //add it to the data arraylist
-                    remakeRecentView(); //redraw the view with new data
+                    blogEntries.add(blog); //add it to the data arraylist
+                    remakeEntriesView(); //redraw the view with new data
                 }
             }
 
@@ -87,12 +85,12 @@ public class blog extends Fragment {
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
                 BlogItem blog = new BlogItem(dataSnapshot); //make a blog from the added child
                 if (blog.isValid()){
-                    for (BlogItem blog1 : recentAL){
+                    for (BlogItem blog1 : blogEntries){
                         if (blog.getId().equals(blog1.getId())) { //if the new id matches
-                            recentAL.remove(blog1); //remove the old blog w/ same id
+                            blogEntries.remove(blog1); //remove the old blog w/ same id
                         }
                     }
-                    remakeRecentView(); //redraw the view with new data
+                    remakeEntriesView(); //redraw the view with new data
                 }
             }
 
@@ -108,54 +106,14 @@ public class blog extends Fragment {
         });
     }
 
-    //remakes and draws the constituent views of the Featured section
-    private void remakeFeaturedView() {
-        Collections.sort(featuredAL);
-        featuredLL.removeAllViews();
-        for (final BlogItem blog1 : featuredAL) {
-            //Grab and load image
-            ImageView imageView = new ImageView(getActivity());
-            imageView.setAdjustViewBounds(true);
-            Picasso.get().load(blog1.getImageURL()).into(imageView);
-            //Grab and load title
-            TextView textViewTitle = new TextView(getActivity());
-            textViewTitle.setText(blog1.getTitle());
-            //Grab and load author
-            TextView textViewAuthor = new TextView(getActivity());
-            textViewAuthor.setText(blog1.getAuthor());
-            //Grab and load date
-            TextView textViewDate = new TextView(getActivity());
-            textViewDate.setText(blog1.getFormattedDate());
-
-            //Generate the new linearlayout to add above information to.
-            LinearLayout linearLayout = new LinearLayout(getActivity());
-            linearLayout.setOrientation(LinearLayout.VERTICAL);
-            linearLayout.addView(imageView);
-            linearLayout.addView(textViewTitle);
-            linearLayout.addView(textViewAuthor);
-            linearLayout.addView(textViewDate);
-
-            //Create a listener that loads the event detail on click.
-            linearLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    openBlogDetails(blog1);
-                }
-            });
-
-            //Add to comingUpLL, then redraw the view.
-            featuredLL.addView(linearLayout);
-            view.invalidate();
-        }
-    }
-
     //remakes and draws the constituent views of the recent section
     //same as remakeFeaturedView(), but reads from the recent data arraylist and adds views to the
     //Recent visual section
-    private void remakeRecentView() {
-        Collections.sort(recentAL);
-        recentLL.removeAllViews();
-        for (final BlogItem blog1 : recentAL) {
+    private void remakeEntriesView() {
+        Collections.sort(blogEntries);
+        entriesLL.removeAllViews();
+        boolean firstEntry = true;
+        for (final BlogItem blog1 : blogEntries) {
             //Grab and load image
             ImageView imageView = new ImageView(context);
             imageView.setAdjustViewBounds(true);
@@ -173,10 +131,26 @@ public class blog extends Fragment {
             //Generate the new linearlayout to add above information to.
             LinearLayout linearLayout = new LinearLayout(context);
             linearLayout.setOrientation(LinearLayout.VERTICAL);
+
+            if (firstEntry) {
+                TextView featuredTitleView = new TextView(context);
+                featuredTitleView.setTypeface(Typeface.DEFAULT_BOLD);
+                featuredTitleView.setText(R.string.featured);
+                linearLayout.addView(featuredTitleView);
+            }
+
             linearLayout.addView(imageView);
             linearLayout.addView(textViewTitle);
             linearLayout.addView(textViewAuthor);
             linearLayout.addView(textViewDate);
+
+            if (firstEntry) {
+                TextView recentTitleView = new TextView(context);
+                recentTitleView.setTypeface(Typeface.DEFAULT_BOLD);
+                recentTitleView.setText(R.string.recent);
+                linearLayout.addView(recentTitleView);
+                firstEntry = false;
+            }
 
             //Create a listener that loads the event detail on click.
             linearLayout.setOnClickListener(new View.OnClickListener() {
@@ -187,7 +161,7 @@ public class blog extends Fragment {
             });
 
             //Add to comingUpLL, then redraw the view.
-            recentLL.addView(linearLayout);
+            entriesLL.addView(linearLayout);
             view.invalidate();
         }
     }

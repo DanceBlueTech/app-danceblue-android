@@ -18,8 +18,17 @@ public class BlogItem implements Comparable<BlogItem>{
     public BlogItem (DataSnapshot dataSnapshot){
         isValid = true; //assume valid info passed until proved otherwise
 
-        //read id
-        Object tempId = dataSnapshot.child("id").getValue();
+        //get the id, over-engineered due to spelling errors in DB
+        Object tempId = null; //stays null if the id is otherwise misnamed or missing
+        if (dataSnapshot.child("id").exists()) {
+            tempId = dataSnapshot.child("id").getValue();
+        }
+        else if (dataSnapshot.child("Id").exists()) {
+            tempId = dataSnapshot.child("Id").getValue();
+        }
+        else if (dataSnapshot.child("id value").exists()) {
+            tempId = dataSnapshot.child("id value").getValue();
+        }
 
         //read details info
         DataSnapshot detailsSnapshot = dataSnapshot.child("details");
@@ -43,6 +52,7 @@ public class BlogItem implements Comparable<BlogItem>{
         //check validity of each string created above before moving on
         if (id.equals("") || author.equals("") || title.equals("") || timestamp.equals("")) {
             isValid = false;
+            Log.e(TAG, "Blog FAIL with: "+isValid()+" "+getId()+" "+getAuthor()+" "+getTitle());
             return;
         }
 
@@ -54,6 +64,8 @@ public class BlogItem implements Comparable<BlogItem>{
             Log.e("onViewCreated", "countdownEnd date couldn't be parsed");
             Log.e("onViewCreated", e.getMessage());
             isValid = false;
+            Log.e(TAG, "Blog FAIL with: "+isValid()+" "+getId()+" "+getAuthor()+" "+getTitle());
+            return;
         }
 
         SimpleDateFormat displayFormatter = new SimpleDateFormat("EEEE', 'MMMM' 'd', 'yyyy", Locale.US);
