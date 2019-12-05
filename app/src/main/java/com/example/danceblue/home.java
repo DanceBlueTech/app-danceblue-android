@@ -144,7 +144,6 @@ public class home extends Fragment {
         //arraylist to hold sponsor objects that are in the layout above.
         //allows the sponsors to be easily sorted and added/re/moved
         sponsorsAL = new ArrayList<>();
-        //layout to hold variable amount of sponsors
         databaseRef.child("sponsors").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {

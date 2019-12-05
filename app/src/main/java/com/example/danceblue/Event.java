@@ -14,7 +14,8 @@ import java.util.Locale;
 public class Event implements Comparable<Event> {
     //data members
     private boolean isValid;
-    private String address, description, id, imageURL, mapURL, time, title, formattedDate, startString, endString;
+    private String address, description, id, imageURL, mapURL, time, title, formattedDate,
+            startString, endString;
     private Date startDate, endDate;
     private static final String TAG = "Event.java";
 
@@ -118,12 +119,12 @@ public class Event implements Comparable<Event> {
         return title;
     }
 
-    public Date getStartDate() {
-        return startDate;
+    public String getStartMillis() {
+        return Long.toString(startDate.getTime());
     }
 
-    public Date getEndDate() {
-        return endDate;
+    public String getEndMillis() {
+        return Long.toString(endDate.getTime());
     }
 
     public String getFormattedDate() {

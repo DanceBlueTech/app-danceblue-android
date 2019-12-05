@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.provider.CalendarContract;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +27,7 @@ import java.util.HashMap;
 public class EventDetails extends Fragment {
     //data members
     private final String[] STRING_NAMES = {"imgURL", "title", "formattedDate", "description",
-            "mapURL", "address", "startString", "endString", "time"};
+            "mapURL", "address", "startMillis", "endMillis"};
     //mapping of above string names to values sent in the bundled args
     private HashMap<String, String> stringsMap;
     private static final String TAG = "EventDetails.java";
@@ -66,21 +67,37 @@ public class EventDetails extends Fragment {
         LinearLayout linearLayout = view.findViewById(R.id.linearLayout);
 
         //Sets up a button to save event information to the user's calendar.
-        ImageButton calendarAddBtn = new ImageButton(getActivity());
+        final ImageButton calendarAddBtn = new ImageButton(getActivity());
         calendarAddBtn.setImageResource(R.drawable.baseline_add_black_24);
+        //calendarAddBtn.setForegroundGravity(Gravity.END);
         calendarAddBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //todo add event with saved details to calendar
+                //make an intent to launch the calendar for inserting an item
+                Intent calIntent = new Intent(Intent.ACTION_INSERT);
+                calIntent.setType("vnd.android.cursor.item/event");
+                //fill the intent with the relevant details
+                calIntent.putExtra(CalendarContract.Events.TITLE,
+                        stringsMap.get("title"));
+                calIntent.putExtra(CalendarContract.Events.DESCRIPTION,
+                        stringsMap.get("description"));
+                calIntent.putExtra(CalendarContract.Events.EVENT_LOCATION,
+                        stringsMap.get("address"));
+                calIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME,
+                        Long.parseLong(stringsMap.get("startMillis")));
+                calIntent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME,
+                        Long.parseLong(stringsMap.get("endMillis")));
+                startActivity(calIntent); //start the activity the intent describes
             }
         });
-        calendarAddBtn.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         linearLayout.addView(calendarAddBtn);
 
         //Grabs and displays the image
         ImageView imageView = new ImageView(getActivity());
-        Picasso.get().load(stringsMap.get("imgURL")).into(imageView);
+        Picasso.get().load(stringsMap.get("imgURL")).fit().into(imageView);
+        imageView.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         linearLayout.addView(imageView);
 
         //Grabs and displays the title
@@ -105,14 +122,13 @@ public class EventDetails extends Fragment {
         directionsTitleView.setText(getString(R.string.directions_title));
         linearLayout.addView(directionsTitleView);
 
-
-
         ImageButton directionsBtn = new ImageButton(getActivity());
-        Picasso.get().load(stringsMap.get("mapURL")).into(directionsBtn);
+        directionsBtn.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        Picasso.get().load(stringsMap.get("mapURL")).fit().into(directionsBtn);
         directionsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //todo open map app w/ directions to address
             Uri gmmIntentUri = Uri.parse("geo:0,0?q="+stringsMap.get("address"));
             Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
             mapIntent.setPackage("com.google.android.apps.maps");

@@ -156,6 +156,8 @@ public class events extends Fragment {
             //Grab and load image
             ImageView imageView = new ImageView(getActivity());
             Picasso.get().load(event1.getImageURL()).into(imageView);
+            imageView.setLayoutParams(new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             //Grab and load the title
             TextView textView = new TextView(getActivity());
             textView.setText(event1.getTitle());
@@ -194,6 +196,8 @@ public class events extends Fragment {
             //Grab and load image
             ImageView imageView = new ImageView(getActivity());
             Picasso.get().load(event1.getImageURL()).into(imageView);
+            imageView.setLayoutParams(new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             //Grab and load title
             TextView textView = new TextView(getActivity());
             textView.setText(event1.getTitle());
@@ -233,15 +237,14 @@ public class events extends Fragment {
         stringsAL.add(event.getDescription());
         stringsAL.add(event.getMapURL());
         stringsAL.add(event.getAddress());
-        stringsAL.add(event.getStartString());
-        stringsAL.add(event.getEndString());
-        stringsAL.add(event.getTime());
+        stringsAL.add(event.getStartMillis());
+        stringsAL.add(event.getEndMillis());
         args.putStringArrayList("stringsAL", stringsAL);
 
         EventDetails detailsFragment = new EventDetails(); //make the new fragment
         detailsFragment.setArguments(args); //attach the bundled info
         //replace the whole tabs fragment with the details fragment, adding to the backstack to
-        //enable back-button functionality
+        //enable back-button functionality, null value means no retrieval ID from backstack
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 detailsFragment).addToBackStack(null).commit();
     }
