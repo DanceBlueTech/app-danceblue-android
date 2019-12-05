@@ -224,6 +224,7 @@ public class home extends Fragment {
             //Grab and load the image into an imageview
             ImageView imageView = new ImageView(getActivity());
             Picasso.get().load(spon.getImageURL()).into(imageView);
+            imageView.setAdjustViewBounds(true);
 
             //Generate the new linearlayout to add to sponsorsLL
             LinearLayout linearLayout = new LinearLayout(getActivity());

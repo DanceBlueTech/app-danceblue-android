@@ -1,6 +1,5 @@
 package com.example.danceblue;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -9,7 +8,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.provider.CalendarContract;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,6 +67,8 @@ public class EventDetails extends Fragment {
         //Sets up a button to save event information to the user's calendar.
         final ImageButton calendarAddBtn = new ImageButton(getActivity());
         calendarAddBtn.setImageResource(R.drawable.baseline_add_black_24);
+        calendarAddBtn.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
         //calendarAddBtn.setForegroundGravity(Gravity.END);
         calendarAddBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,9 +95,8 @@ public class EventDetails extends Fragment {
 
         //Grabs and displays the image
         ImageView imageView = new ImageView(getActivity());
-        Picasso.get().load(stringsMap.get("imgURL")).fit().into(imageView);
-        imageView.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        imageView.setAdjustViewBounds(true);
+        Picasso.get().load(stringsMap.get("imgURL")).into(imageView);
         linearLayout.addView(imageView);
 
         //Grabs and displays the title
@@ -123,9 +122,8 @@ public class EventDetails extends Fragment {
         linearLayout.addView(directionsTitleView);
 
         ImageButton directionsBtn = new ImageButton(getActivity());
-        directionsBtn.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        Picasso.get().load(stringsMap.get("mapURL")).fit().into(directionsBtn);
+        directionsBtn.setAdjustViewBounds(true);
+        Picasso.get().load(stringsMap.get("mapURL")).into(directionsBtn);
         directionsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

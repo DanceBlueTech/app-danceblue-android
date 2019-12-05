@@ -115,6 +115,7 @@ public class blog extends Fragment {
         for (final BlogItem blog1 : featuredAL) {
             //Grab and load image
             ImageView imageView = new ImageView(getActivity());
+            imageView.setAdjustViewBounds(true);
             Picasso.get().load(blog1.getImageURL()).into(imageView);
             //Grab and load title
             TextView textViewTitle = new TextView(getActivity());
@@ -157,6 +158,7 @@ public class blog extends Fragment {
         for (final BlogItem blog1 : recentAL) {
             //Grab and load image
             ImageView imageView = new ImageView(context);
+            imageView.setAdjustViewBounds(true);
             Picasso.get().load(blog1.getImageURL()).into(imageView);
             //Grab and load title
             TextView textViewTitle = new TextView(context);

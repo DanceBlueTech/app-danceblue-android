@@ -1,11 +1,9 @@
 package com.example.danceblue;
 
-import android.app.Activity;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -155,9 +153,8 @@ public class events extends Fragment {
         for (final Event event1 : thisWeekAL) { //do for each event in the data arraylist
             //Grab and load image
             ImageView imageView = new ImageView(getActivity());
+            imageView.setAdjustViewBounds(true);
             Picasso.get().load(event1.getImageURL()).into(imageView);
-            imageView.setLayoutParams(new ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             //Grab and load the title
             TextView textView = new TextView(getActivity());
             textView.setText(event1.getTitle());
@@ -195,9 +192,8 @@ public class events extends Fragment {
         for (final Event event1 : comingUpAL) {
             //Grab and load image
             ImageView imageView = new ImageView(getActivity());
+            imageView.setAdjustViewBounds(true);
             Picasso.get().load(event1.getImageURL()).into(imageView);
-            imageView.setLayoutParams(new ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             //Grab and load title
             TextView textView = new TextView(getActivity());
             textView.setText(event1.getTitle());
