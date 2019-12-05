@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.provider.CalendarContract;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,9 +68,11 @@ public class EventDetails extends Fragment {
         //Sets up a button to save event information to the user's calendar.
         final ImageButton calendarAddBtn = new ImageButton(getActivity());
         calendarAddBtn.setImageResource(R.drawable.baseline_add_black_24);
-        calendarAddBtn.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        //calendarAddBtn.setForegroundGravity(Gravity.END);
+        //
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.gravity = Gravity.END;
+        calendarAddBtn.setLayoutParams(params);
         calendarAddBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
