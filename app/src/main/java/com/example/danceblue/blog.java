@@ -7,9 +7,12 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -31,7 +34,6 @@ import java.util.Collections;
 public class blog extends Fragment {
     //data members
     private DatabaseReference databaseReference;
-    private LinearLayout entriesLL;
     private ArrayList<BlogItem> blogEntries;
     private View view;
     private Context context;
@@ -50,51 +52,74 @@ public class blog extends Fragment {
 
         //setup
         databaseReference = FirebaseDatabase.getInstance().getReference();
-        entriesLL = view.findViewById(R.id.entriesLL);
         //initialize with size 0 for the size dependent log in remakeEntriesView()
         //no-args constructor starts w/ size 10, was leading to NPEs
         blogEntries = new ArrayList<>(0);
         this.view = view;
 
-        //Start of the blog code
-        //Listen to the 'blog' child.
+        //setup the RecyclerView
+        RecyclerView recyclerView = view.findViewById(R.id.rvBlog);
+        final BlogAdapter adapter = new BlogAdapter(blogEntries);
+        recyclerView.setAdapter(adapter); //populates the RecyclerView w/ empty ArrayList
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        //todo implement touch -> details fragment here
+        //todo https://guides.codepath.com/android/using-the-recyclerview#handling-touch-events
+        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            @Override
+            public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+                return false;
+            }
+
+            @Override
+            public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+
+            }
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+            }
+        });
+
+        //populate the ArrayList with BlogItem objects constructed from the firebase data
+        //then notify the adapter of the relevant data changes, to reflect in RecyclerView
         databaseReference.child("blog").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 BlogItem blog = new BlogItem(dataSnapshot); //make a blog from the added child
-                blogEntries.add(blog);
-                if (blogEntries.size() >= dataSnapshot.getChildrenCount()) {
-                    //only remake the views if the ArrayList is fully populated with all the
-                    //children from the DataSnapshot. helps with initial performance when the
-                    //blog tab is first opened
-                    remakeEntriesView();
+                if (blog.isValid()) {
+                    blogEntries.add(blog);
+                    Collections.sort(blogEntries);
+                    adapter.notifyItemInserted(blogEntries.indexOf(blog));
                 }
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 BlogItem blog = new BlogItem(dataSnapshot); //make a blog from the added child
-                for (BlogItem blog1 : blogEntries){
-                    if (blog.getId().equals(blog1.getId())) { //if the new id matches
-                        blogEntries.remove(blog1); //remove the old blog w/ same id
+                if (blog.isValid()) {
+                    for (BlogItem blog1 : blogEntries) {
+                        if (blog.getId().equals(blog1.getId())) { //if the new id matches
+                            blogEntries.remove(blog1); //remove the old blog w/ same id
+                        }
                     }
-                }
-                blogEntries.add(blog); //add it to the data arraylist
-                if (blogEntries.size() >= dataSnapshot.getChildrenCount()) {
-                    remakeEntriesView();
+                    blogEntries.add(blog); //add it to the data arraylist
+                    Collections.sort(blogEntries);
+                    adapter.notifyItemChanged(blogEntries.indexOf(blog));
                 }
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
                 BlogItem blog = new BlogItem(dataSnapshot); //make a blog from the added child
-                for (BlogItem blog1 : blogEntries){
-                    if (blog.getId().equals(blog1.getId())) { //if the new id matches
-                        blogEntries.remove(blog1); //remove the old blog w/ same id
+                if (blog.isValid()) {
+                    for (BlogItem blog1 : blogEntries) {
+                        if (blog.getId().equals(blog1.getId())) { //if the new id matches
+                            int index = blogEntries.indexOf(blog1);
+                            blogEntries.remove(blog1); //remove the old blog w/ same id
+                            adapter.notifyItemRemoved(index);
+                        }
                     }
-                }
-                if (blogEntries.size() >= dataSnapshot.getChildrenCount()) {
-                    remakeEntriesView();
                 }
             }
 
@@ -118,7 +143,7 @@ public class blog extends Fragment {
     //remakes and draws the constituent views of the recent section
     //same as remakeFeaturedView(), but reads from the recent data arraylist and adds views to the
     //Recent visual section
-    private void remakeEntriesView() {
+    /*private void remakeEntriesView() {
         Collections.sort(blogEntries);
         entriesLL.removeAllViews();
         boolean firstEntry = true;
@@ -175,7 +200,7 @@ public class blog extends Fragment {
                 view.invalidate();
             }
         }
-    }
+    }*/
 
     //TODO finish this once blogItem is finished
     //called in the onClick listeners of anonymous LinearLayouts made in the remake functions above
