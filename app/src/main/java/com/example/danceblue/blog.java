@@ -2,11 +2,13 @@ package com.example.danceblue;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +35,7 @@ public class blog extends Fragment {
     private ArrayList<BlogItem> blogEntries;
     private View view;
     private Context context;
-
+    private final String TAG = "blog.java";
 
     @Nullable
     @Override
@@ -49,20 +51,22 @@ public class blog extends Fragment {
         //setup
         databaseReference = FirebaseDatabase.getInstance().getReference();
         entriesLL = view.findViewById(R.id.entriesLL);
-        blogEntries = new ArrayList<>();
+        //initialize with size 0 for the size dependent log in remakeEntriesView()
+        //no-args constructor starts w/ size 10, was leading to NPEs
+        blogEntries = new ArrayList<>(0);
         this.view = view;
 
         //Start of the blog code
         //Listen to the 'blog' child.
-        // As I understand it the newest story is 'featured', the rest are recent.
-        //TODO currently prints all to recent, need to come up with way to display first in featured.
         databaseReference.child("blog").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 BlogItem blog = new BlogItem(dataSnapshot); //make a blog from the added child
-                if (blog.isValid()){
-                    blogEntries.add(blog);
-                    Collections.sort(blogEntries);
+                blogEntries.add(blog);
+                if (blogEntries.size() >= dataSnapshot.getChildrenCount()) {
+                    //only remake the views if the ArrayList is fully populated with all the
+                    //children from the DataSnapshot. helps with initial performance when the
+                    //blog tab is first opened
                     remakeEntriesView();
                 }
             }
@@ -70,27 +74,27 @@ public class blog extends Fragment {
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 BlogItem blog = new BlogItem(dataSnapshot); //make a blog from the added child
-                if (blog.isValid()){
-                    for (BlogItem blog1 : blogEntries){
-                        if (blog.getId().equals(blog1.getId())) { //if the new id matches
-                            blogEntries.remove(blog1); //remove the old blog w/ same id
-                        }
+                for (BlogItem blog1 : blogEntries){
+                    if (blog.getId().equals(blog1.getId())) { //if the new id matches
+                        blogEntries.remove(blog1); //remove the old blog w/ same id
                     }
-                    blogEntries.add(blog); //add it to the data arraylist
-                    remakeEntriesView(); //redraw the view with new data
+                }
+                blogEntries.add(blog); //add it to the data arraylist
+                if (blogEntries.size() >= dataSnapshot.getChildrenCount()) {
+                    remakeEntriesView();
                 }
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
                 BlogItem blog = new BlogItem(dataSnapshot); //make a blog from the added child
-                if (blog.isValid()){
-                    for (BlogItem blog1 : blogEntries){
-                        if (blog.getId().equals(blog1.getId())) { //if the new id matches
-                            blogEntries.remove(blog1); //remove the old blog w/ same id
-                        }
+                for (BlogItem blog1 : blogEntries){
+                    if (blog.getId().equals(blog1.getId())) { //if the new id matches
+                        blogEntries.remove(blog1); //remove the old blog w/ same id
                     }
-                    remakeEntriesView(); //redraw the view with new data
+                }
+                if (blogEntries.size() >= dataSnapshot.getChildrenCount()) {
+                    remakeEntriesView();
                 }
             }
 
@@ -106,6 +110,11 @@ public class blog extends Fragment {
         });
     }
 
+    //todo convert this into an async task to prevent over-loading of the main ui thread
+    //todo https://developer.android.com/reference/android/os/AsyncTask
+    //todo https://www.journaldev.com/9708/android-asynctask-example-tutorial
+    //private static class AsyncRedrawBlogEntries extends AsyncTask<BlogItem, null, LinearLayout>
+
     //remakes and draws the constituent views of the recent section
     //same as remakeFeaturedView(), but reads from the recent data arraylist and adds views to the
     //Recent visual section
@@ -114,55 +123,57 @@ public class blog extends Fragment {
         entriesLL.removeAllViews();
         boolean firstEntry = true;
         for (final BlogItem blog1 : blogEntries) {
-            //Grab and load image
-            ImageView imageView = new ImageView(context);
-            imageView.setAdjustViewBounds(true);
-            Picasso.get().load(blog1.getImageURL()).into(imageView);
-            //Grab and load title
-            TextView textViewTitle = new TextView(context);
-            textViewTitle.setText(blog1.getTitle());
-            //Grab and load author
-            TextView textViewAuthor = new TextView(context);
-            textViewAuthor.setText(blog1.getAuthor());
-            //Grab and load date
-            TextView textViewDate = new TextView(context);
-            textViewDate.setText(blog1.getFormattedDate());
+            if (blog1.isValid()) { //only generate views from valid BlogItems
+                //Grab and load image
+                ImageView imageView = new ImageView(context);
+                imageView.setAdjustViewBounds(true);
+                Picasso.get().load(blog1.getImageURL()).into(imageView);
+                //Grab and load title
+                TextView textViewTitle = new TextView(context);
+                textViewTitle.setText(blog1.getTitle());
+                //Grab and load author
+                TextView textViewAuthor = new TextView(context);
+                textViewAuthor.setText(blog1.getAuthor());
+                //Grab and load date
+                TextView textViewDate = new TextView(context);
+                textViewDate.setText(blog1.getFormattedDate());
 
-            //Generate the new linearlayout to add above information to.
-            LinearLayout linearLayout = new LinearLayout(context);
-            linearLayout.setOrientation(LinearLayout.VERTICAL);
+                //Generate the new linearlayout to add above information to.
+                LinearLayout linearLayout = new LinearLayout(context);
+                linearLayout.setOrientation(LinearLayout.VERTICAL);
 
-            if (firstEntry) {
-                TextView featuredTitleView = new TextView(context);
-                featuredTitleView.setTypeface(Typeface.DEFAULT_BOLD);
-                featuredTitleView.setText(R.string.featured);
-                linearLayout.addView(featuredTitleView);
-            }
-
-            linearLayout.addView(imageView);
-            linearLayout.addView(textViewTitle);
-            linearLayout.addView(textViewAuthor);
-            linearLayout.addView(textViewDate);
-
-            if (firstEntry) {
-                TextView recentTitleView = new TextView(context);
-                recentTitleView.setTypeface(Typeface.DEFAULT_BOLD);
-                recentTitleView.setText(R.string.recent);
-                linearLayout.addView(recentTitleView);
-                firstEntry = false;
-            }
-
-            //Create a listener that loads the event detail on click.
-            linearLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    openBlogDetails(blog1);
+                if (firstEntry) {
+                    TextView featuredTitleView = new TextView(context);
+                    featuredTitleView.setTypeface(Typeface.DEFAULT_BOLD);
+                    featuredTitleView.setText(R.string.featured);
+                    linearLayout.addView(featuredTitleView);
                 }
-            });
 
-            //Add to comingUpLL, then redraw the view.
-            entriesLL.addView(linearLayout);
-            view.invalidate();
+                linearLayout.addView(imageView);
+                linearLayout.addView(textViewTitle);
+                linearLayout.addView(textViewAuthor);
+                linearLayout.addView(textViewDate);
+
+                if (firstEntry) {
+                    TextView recentTitleView = new TextView(context);
+                    recentTitleView.setTypeface(Typeface.DEFAULT_BOLD);
+                    recentTitleView.setText(R.string.recent);
+                    linearLayout.addView(recentTitleView);
+                    firstEntry = false;
+                }
+
+                //Create a listener that loads the event detail on click.
+                linearLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        openBlogDetails(blog1);
+                    }
+                });
+
+                //Add to comingUpLL, then redraw the view.
+                entriesLL.addView(linearLayout);
+                view.invalidate();
+            }
         }
     }
 

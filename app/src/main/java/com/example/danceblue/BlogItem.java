@@ -12,8 +12,10 @@ import java.util.Locale;
 public class BlogItem implements Comparable<BlogItem>{
     private boolean isValid;
     private String id, imageURL, author, title, formattedDate;
-    private Date date;
+    //make sure the date has a default value so it can be sorted even if invalid
+    private Date date = new Date();
     private static final String TAG = "BlogItem.java";
+    private DataSnapshot chunksDSS;
 
     public BlogItem (DataSnapshot dataSnapshot){
         isValid = true; //assume valid info passed until proved otherwise
@@ -30,15 +32,13 @@ public class BlogItem implements Comparable<BlogItem>{
             tempId = dataSnapshot.child("id value").getValue();
         }
 
-        //read details info
+        //read in the needed info from the details child
         DataSnapshot detailsSnapshot = dataSnapshot.child("details");
         Object tempAuthor = detailsSnapshot.child("author").getValue();
         Object tempTitle = detailsSnapshot.child("title").getValue();
         Object tempTimeStamp = detailsSnapshot.child("timestamp").getValue();
         Object tempImage = detailsSnapshot.child("image").getValue();
 
-        //TODO Finish this section by adding ways to get paragraphs.
-        //TODO Add conversions to strings and validity checks after finishing.
         //read article info
         DataSnapshot chunksSnapshot = dataSnapshot.child("chunks");
 
@@ -70,6 +70,14 @@ public class BlogItem implements Comparable<BlogItem>{
 
         SimpleDateFormat displayFormatter = new SimpleDateFormat("EEEE', 'MMMM' 'd', 'yyyy", Locale.US);
         formattedDate = displayFormatter.format(date);
+
+        //store the whole chunks child to be parsed later when tapped, reduce up-front workload
+        chunksDSS = dataSnapshot.child("chunks");
+        if (!chunksDSS.exists()) {
+            isValid = false;
+            Log.e(TAG, "Invalid chunks in blog: "+getId()+" "+getAuthor()+" "+getTitle());
+            return; //entry can't be expanded w/o valid chunks, so don't display at all if invalid
+        }
 
         Log.d(TAG, "Blog made with: "+isValid()+" "+getId()+" "+getAuthor()+" "+getTitle());
     }
