@@ -1,13 +1,17 @@
 package com.example.danceblue;
 
 import android.content.Context;
-import android.graphics.Typeface;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -19,11 +23,17 @@ import androidx.recyclerview.widget.RecyclerView;
 public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.BlogHolder> {
     //inner viewholder class
     public class BlogHolder extends RecyclerView.ViewHolder {
+        //data members
+        public LinearLayout blogLayout;
         public ImageView imageView;
         public TextView categoryView, titleView, authorView, dateView;
+        public View blogItemView;
 
+        //constructor
         public BlogHolder(View blogItemView) {
             super(blogItemView);
+            this.blogItemView = blogItemView;
+            blogLayout = blogItemView.findViewById(R.id.blogLinearLayout);
             categoryView = blogItemView.findViewById(R.id.blogCategoryView);
             imageView = blogItemView.findViewById(R.id.blogImageView);
             titleView = blogItemView.findViewById(R.id.blogTitleView);
@@ -32,10 +42,16 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.BlogHolder> {
         }
     }
 
-    private ArrayList<BlogItem> blogItems; //ArrayList of BlogItem objects to draw views from
 
-    public BlogAdapter(ArrayList<BlogItem> data) {
+    //data members
+    private ArrayList<BlogItem> blogItems; //ArrayList of BlogItem objects to draw views from
+    //reference to the blog that constructed this Adapter, kept so we can access the call the
+    //openDetails function from the blogItemView's onclickListener
+    private blog blogFrag;
+
+    public BlogAdapter(ArrayList<BlogItem> data, blog blog) {
         blogItems = data;
+        blogFrag = blog;
     }
 
     //callback to make a fresh blog entry layout template, wrap in a ViewHolder, and return it
@@ -51,7 +67,7 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.BlogHolder> {
     //callback to populate the template's views with data from the correct BlogItem
     @Override
     public void onBindViewHolder(@NonNull BlogHolder holder, int position) {
-        BlogItem blogItem = blogItems.get(position); //get the data model
+        final BlogItem blogItem = blogItems.get(position); //get the data model
         //populate the views with the relevant data from blogItem
         //set the category view based on position
         TextView categoryView = holder.categoryView;
@@ -77,6 +93,15 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.BlogHolder> {
         //Grab and load date
         TextView textViewDate = holder.dateView;
         textViewDate.setText(blogItem.getFormattedDate());
+
+        //click listener to open details fragment
+        holder.blogItemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                blogFrag.openBlogDetailsListener(blogItem);
+                Log.d("BlogAdapter.java", "onClick: called");
+            }
+        });
     }
 
     @Override

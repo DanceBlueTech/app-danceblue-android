@@ -31,4 +31,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="description_title">DESCRIPTION</string>
     <string name="directions_title">DIRECTIONS</string>
+    <string name="invalidBlogMsg">Invalid Blog Entry. Sorry!</string>
 </resources>
