@@ -226,7 +226,7 @@ public class events extends Fragment {
     //extracts relevant info from the event object into a bundle to be used in details fragment
     private void openEventDetails(Event event) {
         Bundle args = new Bundle(); //bundle the needed info
-        ArrayList<String> stringsAL = new ArrayList<>();
+        ArrayList<String> stringsAL = new ArrayList<>(0);
         stringsAL.add(event.getImageURL());
         stringsAL.add(event.getTitle());
         stringsAL.add(event.getFormattedDate());

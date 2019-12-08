@@ -35,7 +35,7 @@ public class EventDetails extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         //debundle the args and assign as class variables
-        stringsMap = new HashMap<>();
+        stringsMap = new HashMap<>(0);
         Bundle args = this.getArguments();
         if (args != null) {
             ArrayList<String> bundledStrings = args.getStringArrayList("stringsAL");
@@ -63,7 +63,7 @@ public class EventDetails extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        LinearLayout linearLayout = view.findViewById(R.id.linearLayout);
+        LinearLayout linearLayout = view.findViewById(R.id.eventDetailsLL);
 
         //Sets up a button to save event information to the user's calendar.
         final ImageButton calendarAddBtn = new ImageButton(getActivity());
@@ -76,7 +76,6 @@ public class EventDetails extends Fragment {
         calendarAddBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //todo add event with saved details to calendar
                 //make an intent to launch the calendar for inserting an item
                 Intent calIntent = new Intent(Intent.ACTION_INSERT);
                 calIntent.setType("vnd.android.cursor.item/event");
