@@ -1,3 +1,5 @@
+//Created by Adrian Carideo, Joe Clements, Kendall Conley
+//Copyright © 2019 DanceBlue. All rights reserved.
 package com.example.danceblue;
 
 import android.os.Bundle;
@@ -12,8 +14,6 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.function.BiConsumer;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

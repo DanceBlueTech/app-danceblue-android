@@ -1,3 +1,5 @@
+//Created by Adrian Carideo, Joe Clements, Kendall Conley
+//Copyright © 2019 DanceBlue. All rights reserved.
 package com.example.danceblue;
 
 import androidx.annotation.NonNull;

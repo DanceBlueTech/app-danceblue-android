@@ -1,3 +1,5 @@
+//Created by Adrian Carideo, Joe Clements, Kendall Conley
+//Copyright © 2019 DanceBlue. All rights reserved.
 package com.example.danceblue;
 
 import android.content.Context;
@@ -12,7 +14,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
